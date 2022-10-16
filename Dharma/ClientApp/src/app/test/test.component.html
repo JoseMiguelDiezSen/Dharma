@@ -1,0 +1,163 @@
+<h1>ANGULAR + NET CORE</h1>
+
+<script src="/lib/bootstrap/js/bootstrap.js"></script>
+
+<h3> DIRECTIVAS</h3>
+
+<div class="row">
+  <!-- Columna (1): Ejemplo con 'ngIf' -->
+   <div class="col-sm-4" style="background-color:yellow;">
+
+     <!-- Titulo -->
+     <hr>
+     <h2>DIRECTIVA ESTRUCTURAL ngIf</h2>
+     <hr>
+
+     <!-- Comprobamos si en la lista hay mas ó menos de 2 ciudades -->
+     <!-- Si hay mas de 2 ciudades entramos en el if, sino, mostramos el mensaje -->
+     <div *ngIf="listaCiudades.length<2;else mensajeCiudades">
+
+       Hay menos de dos ciudades en el listado
+
+     </div>
+
+     <!-- Mensaje definido para mostrarse en caso de que haya menos de dos ciudades-->
+     <ng-template #mensajeCiudades>Hay mas de 2 ciudades </ng-template>
+
+  </div>
+
+  <!-- Columna (2): Ejemplo con 'ngFor' -->
+   <div class="col-sm-4" style="background-color:skyblue;">
+
+     <!-- Titulo -->
+     <hr>
+     <h2>DIRECTIVA ESTRUCTURAL ngFor</h2>
+     <hr>
+
+     <!-- Bucle for recorriendo la lista de ciudades-->
+     <ul>
+       <!-- Mostramos tambien el indice -->
+       <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
+         {{indice}} {{ciudad}}
+       </li>
+     </ul>
+
+     <hr>
+
+   </div>
+
+  <!-- Columna (3): Ejemplo con 'ngSwitch' -->
+  <div class="col-sm-4" style="background-color:lightpink;">
+    <hr>
+    <h2>ngSwitch (Estructural)</h2>
+    <hr>
+
+
+    <!-- Recorremos el listado de ciudades y referenciamos ...-->
+    <!--<ul *ngFor='let usuario of usuarios' [ngSwitch]="usuario.nombre">
+
+      <li *ngSwitchCase="''">
+        {{usuario.nombre}} = Ingeniero
+      </li>
+
+      <li *ngSwitchCase="'Paris'">
+        {{usuario.nombre}} = France
+      </li>
+
+      <li *ngSwitchCase="'Londres'">
+        {{usuario.nombre}} = England
+      </li>
+
+      <li *ngSwitchCase="'Milan'">
+        {{usuario.nombre}} = Italy
+      </li>
+    </ul>-->
+  <hr>
+
+  </div>
+
+  <hr>
+</div>
+
+
+
+    <div class="row">
+      <div class="col-sm-4" style="background-color:deepskyblue;">
+
+        <h1>ngIf + ngFor</h1>
+
+        <button class="btn-success" type="button" (click)="pruebaNgFor()"> Ejecutar ngFor </button>
+
+        <ul>
+
+          <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
+
+            <span *ngIf="indice < 2;else mensaje">
+
+              {{indice}} {{ciudad}}
+
+            </span>
+
+          </li>
+
+        </ul>
+
+        <ng-template #mensaje>Este elemento tiene indice mayor a 2 </ng-template>
+
+        <button class="btn-success" type="button" (click)="addItemToArray()" style="margin-right:10px;"> ADD </button>
+        <button class="btn-success" type="button" (click)="removeItemToArray()"> REMOVE </button>
+
+      </div>
+
+      <div class="col-sm-4" style="background-color:red;">
+
+        <h1>Llamada Boton</h1>
+
+        <button class="btn-success" type="button" (click)="pruebaNgIf()"> Ejecutar ngIf </button>
+
+        <br />
+
+        <div>
+          {{mensajeBienvenida}}
+        </div>
+
+        <hr>
+
+
+
+
+
+
+      </div>
+
+    <div class="col-sm-4" style="background-color:deeppink;">
+
+      <h1>TEST 8</h1>
+
+    </div>
+  </div>
+
+
+
+
+<script>
+
+
+  //$.document.ready(){ }
+
+
+</script>
+
+<!--<hr>
+
+<h2>Formulario</h2>
+<hr>-->
+<!--<form [FormGroup]="form" (ngSubmit)="guardar">
+  <label style="margin-right:10px;">Introduce tu nombre</label>
+  <input type="text" style="margin-right:10px;" formControlName="nombre" class="form-control">
+  <br />
+  <label style="margin-right:10px;">Introduce tu password</label>
+  <input type="text" style="margin-right:10px;" formControlName="password">
+  <br /><br />
+</form>-->
+<!-- <button class="btn-success" type="button" style="width:200px;" (click)="cambiaNombre()"> Enviar </button>-->
