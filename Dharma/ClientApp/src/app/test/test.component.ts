@@ -11,10 +11,11 @@ import { Component } from '@angular/core';
 
 export class TestComponent {
 
-    // Declaracion de variables
+    // *** VARIABLES ***
     public mensajeBienvenida = "";
     public listaCiudades: string[] = ["Madrid", "Paris", "Londres", "Milan"];
 
+    // Lista de usuarios
     usuarios = [
       { id: 1, name: "Ismael", pais:"España", profesion:"Arquitecto" },
       { id: 2, name: "Roberto", pais: "Francia", profesion: "Profesor" },
@@ -24,7 +25,7 @@ export class TestComponent {
       { id: 6, name: "Ricardo", pais: "Panama", profesion: "Bombero" }
     ];
 
-
+    //*** METODOS ***
     // Metodo ngIF
 
     public pruebaNgIf() {
@@ -87,6 +88,67 @@ export class TestComponent {
     }
 
 
+  // Motodo aux de Imprimir
+  private getTagsHtml(tagName: keyof HTMLElementTagNameMap): string {
+
+    const htmlStr: string[] = [];
+    const elements = document.getElementsByTagName(tagName);
+
+    for (let idx = 0; idx < elements.length; idx++) {
+
+      htmlStr.push(elements[idx].outerHTML);
+
+    }
+
+    return htmlStr.join('\r\n');
+
+  }
+
+  // Metodo para imprimir
+  imprimir(): void {
+
+    //Imprimir en una linea
+    //let printContent = window.print();
+
+    const styleHtml = this.getTagsHtml('style');
+    const linksHtml = this.getTagsHtml('link');
+
+    let printContent, popUpWindow
+    printContent = document.getElementById('print-section')!.innerHTML;
+
+    popUpWindow = window.open('', '_blank', 'top=200,left=200,height=100%,width=auto');
+    popUpWindow!.document.open();
+    popUpWindow!.document.write(`
+
+            <html>
+                <head>
+                  ${linksHtml}
+                  ${styleHtml}
+                </head>
+
+            <body onload='window.print();window.close()' media="print">${printContent}</body>
+
+            </html>
+
+          `);
+
+    popUpWindow!.document.close();
+
+  }
+
+  public cargarDatos() {
+    //table.apply(this.lstCiudades);
+  }
+
+  // Metodo 2
+  showName(int: number) {
+  }
+
+  // Metodo 3 (Obligatorio retorno bolean)
+  checkName(int: number): boolean {
+    // this.dialog.open(HomeComponent);
+    return true;
+  }
 
 
   }

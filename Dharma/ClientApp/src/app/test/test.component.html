@@ -6,45 +6,45 @@
 
 <div class="row">
   <!-- Columna (1): Ejemplo con 'ngIf' -->
-   <div class="col-sm-4" style="background-color:yellow;">
+  <div class="col-sm-4" style="background-color:yellow;">
 
-     <!-- Titulo -->
-     <hr>
-     <h2>DIRECTIVA ESTRUCTURAL ngIf</h2>
-     <hr>
+    <!-- Titulo -->
+    <hr>
+    <h2>DIRECTIVA ESTRUCTURAL ngIf</h2>
+    <hr>
 
-     <!-- Comprobamos si en la lista hay mas ó menos de 2 ciudades -->
-     <!-- Si hay mas de 2 ciudades entramos en el if, sino, mostramos el mensaje -->
-     <div *ngIf="listaCiudades.length<2;else mensajeCiudades">
+    <!-- Comprobamos si en la lista hay mas ó menos de 2 ciudades -->
+    <!-- Si hay mas de 2 ciudades entramos en el if, sino, mostramos el mensaje -->
+    <div *ngIf="listaCiudades.length<2;else mensajeCiudades">
 
-       Hay menos de dos ciudades en el listado
+      Hay menos de dos ciudades en el listado
 
-     </div>
+    </div>
 
-     <!-- Mensaje definido para mostrarse en caso de que haya menos de dos ciudades-->
-     <ng-template #mensajeCiudades>Hay mas de 2 ciudades </ng-template>
+    <!-- Mensaje definido para mostrarse en caso de que haya menos de dos ciudades-->
+    <ng-template #mensajeCiudades>Hay mas de 2 ciudades </ng-template>
 
   </div>
 
   <!-- Columna (2): Ejemplo con 'ngFor' -->
-   <div class="col-sm-4" style="background-color:skyblue;">
+  <div class="col-sm-4" style="background-color:skyblue;">
 
-     <!-- Titulo -->
-     <hr>
-     <h2>DIRECTIVA ESTRUCTURAL ngFor</h2>
-     <hr>
+    <!-- Titulo -->
+    <hr>
+    <h2>DIRECTIVA ESTRUCTURAL ngFor</h2>
+    <hr>
 
-     <!-- Bucle for recorriendo la lista de ciudades-->
-     <ul>
-       <!-- Mostramos tambien el indice -->
-       <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
-         {{indice}} {{ciudad}}
-       </li>
-     </ul>
+    <!-- Bucle for recorriendo la lista de ciudades-->
+    <ul>
+      <!-- Mostramos tambien el indice -->
+      <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
+        {{indice}} {{ciudad}}
+      </li>
+    </ul>
 
-     <hr>
+    <hr>
 
-   </div>
+  </div>
 
   <!-- Columna (3): Ejemplo con 'ngSwitch' -->
   <div class="col-sm-4" style="background-color:lightpink;">
@@ -72,7 +72,7 @@
         {{usuario.nombre}} = Italy
       </li>
     </ul>-->
-  <hr>
+    <hr>
 
   </div>
 
@@ -81,61 +81,180 @@
 
 
 
-    <div class="row">
-      <div class="col-sm-4" style="background-color:deepskyblue;">
+<div class="row">
+  <div class="col-sm-4" style="background-color:deepskyblue;">
 
-        <h1>ngIf + ngFor</h1>
+    <h1>ngIf + ngFor</h1>
 
-        <button class="btn-success" type="button" (click)="pruebaNgFor()"> Ejecutar ngFor </button>
+    <button class="btn-success" type="button" (click)="pruebaNgFor()"> Ejecutar ngFor </button>
 
-        <ul>
+    <ul>
 
-          <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
+      <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
 
-            <span *ngIf="indice < 2;else mensaje">
+        <span *ngIf="indice < 2;else mensaje">
 
-              {{indice}} {{ciudad}}
+          {{indice}} {{ciudad}}
 
-            </span>
+        </span>
 
-          </li>
+      </li>
 
-        </ul>
+    </ul>
 
-        <ng-template #mensaje>Este elemento tiene indice mayor a 2 </ng-template>
+    <ng-template #mensaje>Este elemento tiene indice mayor a 2 </ng-template>
 
-        <button class="btn-success" type="button" (click)="addItemToArray()" style="margin-right:10px;"> ADD </button>
-        <button class="btn-success" type="button" (click)="removeItemToArray()"> REMOVE </button>
+    <button class="btn-success" type="button" (click)="addItemToArray()" style="margin-right:10px;"> ADD </button>
+    <button class="btn-success" type="button" (click)="removeItemToArray()"> REMOVE </button>
 
-      </div>
-
-      <div class="col-sm-4" style="background-color:red;">
-
-        <h1>Llamada Boton</h1>
-
-        <button class="btn-success" type="button" (click)="pruebaNgIf()"> Ejecutar ngIf </button>
-
-        <br />
-
-        <div>
-          {{mensajeBienvenida}}
-        </div>
-
-        <hr>
-
-
-
-
-
-
-      </div>
-
-    <div class="col-sm-4" style="background-color:deeppink;">
-
-      <h1>TEST 8</h1>
-
-    </div>
   </div>
+
+  <div class="col-sm-4" style="background-color:red;">
+
+    <h1>Llamada Boton</h1>
+
+    <button class="btn-success" type="button" (click)="pruebaNgIf()"> Ejecutar ngIf </button>
+
+    <br />
+
+    <div>
+      {{mensajeBienvenida}}
+    </div>
+
+    <hr>
+
+
+
+
+
+
+  </div>
+
+  <div class="col-sm-4" style="background-color:deeppink;">
+
+    <h1>TEST 8</h1>
+
+  </div>
+</div>
+
+
+
+<hr>
+
+
+<h2>Directiva ngFor</h2>
+
+<div *ngFor="let element of listaCiudades">
+  {{element}}
+</div>
+
+
+<div id="print-section">
+
+  <hr>
+  <h2>Tabla</h2>
+
+  <button class="btn-primary" type="button" style="width:200px;" (click)="cargarDatos()"> Cargar datos </button>
+
+  <table border="1px solid black" class="table-dark" style="width:100%;" id="table">
+
+    <!-- Titulo -->
+    <tr>
+      <td colspan="5" style="text-align: center; padding: 10px;">TITULO DE LA TABLA</td>
+    </tr>
+
+    <!-- Fila (1) -->
+    <tr>
+      <td style="padding:10px;"> Celda a1 </td>
+
+      <td style="padding:10px;"> Celda a2 </td>
+
+      <td style="padding:10px;"> Celda a3 </td>
+
+      <td style="padding:10px;"> Celda a4 </td>
+
+      <td style="padding:10px;"> Celda a5 </td>
+
+    </tr>
+
+    <!-- Fila (2) -->
+    <tr>
+
+      <td style="padding:10px;"> Celda b1 </td>
+
+      <td style="padding:10px;"> Celda b2 </td>
+
+      <td style="padding:10px;">Celda b3 </td>
+
+      <td style="padding:10px;">Celda b4 </td>
+
+      <td style="padding:10px;"> Celda b5 </td>
+
+    </tr>
+
+    <!-- Fila (3) -->
+    <tr>
+      <td style="padding:10px;"> Celda c1 </td>
+
+      <td style="padding:10px;"> Celda c2 </td>
+
+      <td style="padding:10px;"> Celda c3 </td>
+
+      <td style="padding:10px;"> Celda c4 </td>
+
+      <td style="padding:10px;"> Celda c4 </td>
+
+    </tr>
+
+    <!-- Fila (4) -->
+    <tr>
+      <td style="padding:10px;"> Celda d1 </td>
+
+      <td style="padding:10px;"> Celda d2 </td>
+
+      <td style="padding:10px;"> Celda d3 </td>
+
+      <td style="padding:10px;"> Celda d4 </td>
+
+      <td style="padding:10px;"> Celda d5 </td>
+
+    </tr>
+
+  </table>
+
+</div>
+
+<hr>
+
+
+<h2>Ejemplo boton con ngIf y llamada a metodo</h2>
+
+<!--<button *ngIf="checkName(name)" (click)="showName(name)">
+  Texto
+</button>-->
+
+<hr>
+
+<hr>
+
+
+<hr>
+
+<h2>Leyenda</h2>
+
+<div class="container">
+  <span style="display:flex;"><div style="width:30px;height:15px;background-color:red;margin-top:7px;"></div>Dia festivo</span>
+  <span style="display:flex;"><div style="width:30px;height:15px;background-color:blue;margin-top:7px;"></div>Dia festivo</span>
+  <span style="display:flex;"><div style="width:30px;height:15px;background-color:green;margin-top:7px;"></div>Dia festivo</span>
+</div>
+
+
+<br />
+
+
+<br />
+
+
 
 
 
