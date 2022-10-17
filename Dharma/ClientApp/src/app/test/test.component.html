@@ -1,10 +1,12 @@
 <h1>ANGULAR + NET CORE</h1>
 
+<!-- Link a bootstrap -->
 <script src="/lib/bootstrap/js/bootstrap.js"></script>
 
 <h3> DIRECTIVAS</h3>
 
 <div class="row">
+
   <!-- Columna (1): Ejemplo con 'ngIf' -->
   <div class="col-sm-4" style="background-color:yellow;">
 
@@ -26,7 +28,7 @@
 
   </div>
 
-  <!-- Columna (2): Ejemplo con 'ngFor' -->
+  <!-- Columna (2): Ejemplo con 'ngFor' - Mostrar array ciudades -->
   <div class="col-sm-4" style="background-color:skyblue;">
 
     <!-- Titulo -->
@@ -76,16 +78,17 @@
 
   </div>
 
-  <hr>
 </div>
 
-
+<hr>
 
 <div class="row">
+
+  <!-- Columna (1): Ejemplo con 'ngIf + ngFor' -->
   <div class="col-sm-4" style="background-color:deepskyblue;">
-
-    <h1>ngIf + ngFor</h1>
-
+    <hr>
+    <h1>Ejemplo ngIf + ngFor</h1>
+    <hr>
     <button class="btn-success" type="button" (click)="pruebaNgFor()"> Ejecutar ngFor </button>
 
     <ul>
@@ -104,125 +107,109 @@
 
     <ng-template #mensaje>Este elemento tiene indice mayor a 2 </ng-template>
 
-    <button class="btn-success" type="button" (click)="addItemToArray()" style="margin-right:10px;"> ADD </button>
-    <button class="btn-success" type="button" (click)="removeItemToArray()"> REMOVE </button>
-
   </div>
 
+  <!-- Columna (2): Ejemplo llamada metodo y mostrar mensaje -->
   <div class="col-sm-4" style="background-color:red;">
-
+    <hr>
     <h1>Llamada Boton</h1>
-
+    <hr>
     <button class="btn-success" type="button" (click)="pruebaNgIf()"> Ejecutar ngIf </button>
-
     <br />
-
+    <hr>
     <div>
       {{mensajeBienvenida}}
     </div>
-
     <hr>
 
-
-
-
-
-
   </div>
 
+  <!-- Columna (2): Operacion con Array -->
   <div class="col-sm-4" style="background-color:deeppink;">
-
-    <h1>TEST 8</h1>
-
+    <hr>
+    <h1>Operaciones con Array</h1>
+    <hr>
+    <!-- Aqui mostrar un listado-->
+    <!-- Botones de control del array -->
+    <button class="btn-success" type="button" (click)="addItemToArray()" style="margin-right:10px;"> ADD </button>
+    <button class="btn-success" type="button" (click)="removeItemToArray()"> REMOVE </button>
   </div>
+
 </div>
-
-
 
 <hr>
 
+<h2 class="alert-info text-center">Tabla</h2>
 
-<h2>Directiva ngFor</h2>
+<button class="btn-primary" type="button" style="width:200px;" (click)="cargarDatos()"> Cargar datos </button>
 
-<div *ngFor="let element of listaCiudades">
-  {{element}}
-</div>
+<table border="1" style="width:100%;" id="table">
+
+  <!-- Titulo -->
+  <tr>
+    <td colspan="5" style="text-align: center; padding: 10px;">TITULO DE LA TABLA</td>
+  </tr>
+
+  <!-- Fila (1) -->
+  <tr>
+    <td style="padding:10px;"> Celda a1 </td>
+
+    <td style="padding:10px;"> Celda a2 </td>
+
+    <td style="padding:10px;"> Celda a3 </td>
+
+    <td style="padding:10px;"> Celda a4 </td>
+
+    <td style="padding:10px;"> Celda a5 </td>
+
+  </tr>
+
+  <!-- Fila (2) -->
+  <tr>
+
+    <td style="padding:10px;"> Celda b1 </td>
+
+    <td style="padding:10px;"> Celda b2 </td>
+
+    <td style="padding:10px;">Celda b3 </td>
+
+    <td style="padding:10px;">Celda b4 </td>
+
+    <td style="padding:10px;"> Celda b5 </td>
+
+  </tr>
+
+  <!-- Fila (3) -->
+  <tr>
+    <td style="padding:10px;"> Celda c1 </td>
+
+    <td style="padding:10px;"> Celda c2 </td>
+
+    <td style="padding:10px;"> Celda c3 </td>
+
+    <td style="padding:10px;"> Celda c4 </td>
+
+    <td style="padding:10px;"> Celda c4 </td>
+
+  </tr>
+
+  <!-- Fila (4) -->
+  <tr>
+    <td style="padding:10px;"> Celda d1 </td>
+
+    <td style="padding:10px;"> Celda d2 </td>
+
+    <td style="padding:10px;"> Celda d3 </td>
+
+    <td style="padding:10px;"> Celda d4 </td>
+
+    <td style="padding:10px;"> Celda d5 </td>
+
+  </tr>
+
+</table>
 
 
-<div id="print-section">
-
-  <hr>
-  <h2>Tabla</h2>
-
-  <button class="btn-primary" type="button" style="width:200px;" (click)="cargarDatos()"> Cargar datos </button>
-
-  <table border="1px solid black" class="table-dark" style="width:100%;" id="table">
-
-    <!-- Titulo -->
-    <tr>
-      <td colspan="5" style="text-align: center; padding: 10px;">TITULO DE LA TABLA</td>
-    </tr>
-
-    <!-- Fila (1) -->
-    <tr>
-      <td style="padding:10px;"> Celda a1 </td>
-
-      <td style="padding:10px;"> Celda a2 </td>
-
-      <td style="padding:10px;"> Celda a3 </td>
-
-      <td style="padding:10px;"> Celda a4 </td>
-
-      <td style="padding:10px;"> Celda a5 </td>
-
-    </tr>
-
-    <!-- Fila (2) -->
-    <tr>
-
-      <td style="padding:10px;"> Celda b1 </td>
-
-      <td style="padding:10px;"> Celda b2 </td>
-
-      <td style="padding:10px;">Celda b3 </td>
-
-      <td style="padding:10px;">Celda b4 </td>
-
-      <td style="padding:10px;"> Celda b5 </td>
-
-    </tr>
-
-    <!-- Fila (3) -->
-    <tr>
-      <td style="padding:10px;"> Celda c1 </td>
-
-      <td style="padding:10px;"> Celda c2 </td>
-
-      <td style="padding:10px;"> Celda c3 </td>
-
-      <td style="padding:10px;"> Celda c4 </td>
-
-      <td style="padding:10px;"> Celda c4 </td>
-
-    </tr>
-
-    <!-- Fila (4) -->
-    <tr>
-      <td style="padding:10px;"> Celda d1 </td>
-
-      <td style="padding:10px;"> Celda d2 </td>
-
-      <td style="padding:10px;"> Celda d3 </td>
-
-      <td style="padding:10px;"> Celda d4 </td>
-
-      <td style="padding:10px;"> Celda d5 </td>
-
-    </tr>
-
-  </table>
-
-</div>
 
 <hr>
 
@@ -232,11 +219,6 @@
 <!--<button *ngIf="checkName(name)" (click)="showName(name)">
   Texto
 </button>-->
-
-<hr>
-
-<hr>
-
 
 <hr>
 
@@ -254,15 +236,37 @@
 
 <br />
 
+<div id="print-section">
 
+  <table class="table-primary" style="width:100%;" id="table">
+    <tr>
+      <td style="padding:10px;"> Celda d1 </td>
 
+      <td style="padding:10px;"> Celda d2 </td>
 
+      <td style="padding:10px;"> Celda d3 </td>
 
+      <td style="padding:10px;"> Celda d4 </td>
+
+      <td style="padding:10px;"> Celda d5 </td>
+
+    </tr>
+
+  </table>
+
+</div>
 
 <script>
 
 
-  //$.document.ready(){ }
+  $(document).ready(function () {
+
+    $("#table").css("border", "1px solid yellow");
+    $("#body").css("background-color", "red");
+
+
+    console.log("Hecho");
+  }
 
 
 </script>

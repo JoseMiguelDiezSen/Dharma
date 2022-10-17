@@ -13,6 +13,7 @@ export class TestComponent {
 
     // *** VARIABLES ***
     public mensajeBienvenida = "";
+    public fechaActual = "";
     public listaCiudades: string[] = ["Madrid", "Paris", "Londres", "Milan"];
 
     // Lista de usuarios
@@ -27,7 +28,6 @@ export class TestComponent {
 
     //*** METODOS ***
     // Metodo ngIF
-
     public pruebaNgIf() {
 
         const date = new Date();
@@ -36,23 +36,27 @@ export class TestComponent {
         let segundos = date.getSeconds();
 
         let dia = date.getDay();
-        let mes = date.getUTCMonth();
+        let mes = date.getMonth();
         let anio = date.getFullYear();
     
         console.log("Fecha:" + dia + "/" + mes + "/" + anio);
         console.log("Hora:" + hora + ":" + minutos + ":" + segundos);
 
+        // Definimos formatos para mostrarlo
         var time = hora + ":" + minutos + ":" + segundos;
+        var currentDate = dia +"/"+ mes+"/"+ anio;
 
         // Hora del dia
         if (hora > 8 && hora < 12)
-         this.mensajeBienvenida = "Buenos días";
+            this.mensajeBienvenida = "Buenos días, son las " + time;
 
         if (hora > 12 && hora < 21)
-         this.mensajeBienvenida = "Buenas tardes, son las " + time;
+            this.mensajeBienvenida = "Buenas tardes, son las " + time;
 
-        if (hora > 21 && hora < 8)
-         this.mensajeBienvenida = "Buenas noches";
+        if (hora > 21 || hora < 8)
+            this.mensajeBienvenida = "Buenas noches son las " + time +" del dia " + currentDate;
+
+        console.log(this.mensajeBienvenida);
       }
 
     // Metodo ngFor
