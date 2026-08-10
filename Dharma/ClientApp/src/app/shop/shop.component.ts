@@ -36,6 +36,7 @@ export class ShopComponent {
   //private readonly dialog MatDialog
 
   // Metodo 1
+
   public cambiaNombre() {
     this.nombre = "bors1One2022";
   }
@@ -44,24 +45,9 @@ export class ShopComponent {
     this.nombre = "Abierto";
   }
 
-  // Motodo aux de Imprimir
-  private getTagsHtml(tagName: keyof HTMLElementTagNameMap): string {
-
-    const htmlStr: string[] = [];
-    const elements = document.getElementsByTagName(tagName);
-
-    for (let idx = 0; idx < elements.length; idx++) {
-
-      htmlStr.push(elements[idx].outerHTML);
-
-    }
-
-    return htmlStr.join('\r\n');
-
-  }
-
   // Metodo para imprimir
-  imprimir(): void {
+  public imprimir(): void {
+
 
     //Imprimir en una linea
     //let printContent = window.print();
@@ -89,6 +75,22 @@ export class ShopComponent {
           `);
 
     popUpWindow!.document.close();
+
+  }
+
+  // Motodo aux de Imprimir
+  private getTagsHtml(tagName: keyof HTMLElementTagNameMap): string {
+
+    const htmlStr: string[] = [];
+    const elements = document.getElementsByTagName(tagName);
+
+    for (let idx = 0; idx < elements.length; idx++) {
+
+      htmlStr.push(elements[idx].outerHTML);
+
+    }
+
+    return htmlStr.join('\r\n');
 
   }
 

@@ -1,141 +1,148 @@
 <h1>ANGULAR + NET CORE</h1>
 
-<!-- Link a bootstrap -->
-<script src="/lib/bootstrap/js/bootstrap.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+<script src="/lib/twitter-bootstrap/js/bootstrap.js"></script>
+
 
 <h3> DIRECTIVAS</h3>
 
-<div class="row">
+  <!-- ROW (1) -->
+  <div class="row">
 
-  <!-- Columna (1): Ejemplo con 'ngIf' -->
-  <div class="col-sm-4" style="background-color:yellow;">
+    <!-- Columna (1): Ejemplo con 'ngIf' -->
+    <div class="col-sm-4" style="background-color:yellow;">
 
-    <!-- Titulo -->
-    <hr>
-    <h2>DIRECTIVA ESTRUCTURAL ngIf</h2>
-    <hr>
+      <!-- Titulo -->
+      <hr>
+      <h2>DIRECTIVA ESTRUCTURAL ngIf</h2>
+      <hr>
 
-    <!-- Comprobamos si en la lista hay mas ó menos de 2 ciudades -->
-    <!-- Si hay mas de 2 ciudades entramos en el if, sino, mostramos el mensaje -->
-    <div *ngIf="listaCiudades.length<2;else mensajeCiudades">
+      <!-- Comprobamos si en la lista hay mas ó menos de 2 ciudades -->
+      <!-- Si hay mas de 2 ciudades entramos en el if, sino, mostramos el mensaje -->
+      <div *ngIf="listaCiudades.length<2;else mensajeCiudades">
 
-      Hay menos de dos ciudades en el listado
+        Hay menos de dos ciudades en el listado
+
+      </div>
+
+      <!-- Mensaje definido para mostrarse en caso de que haya menos de dos ciudades-->
+      <ng-template #mensajeCiudades>Hay mas de 2 ciudades </ng-template>
 
     </div>
 
-    <!-- Mensaje definido para mostrarse en caso de que haya menos de dos ciudades-->
-    <ng-template #mensajeCiudades>Hay mas de 2 ciudades </ng-template>
+    <!-- Columna (2): Ejemplo con 'ngFor' - Mostrar array ciudades -->
+    <div class="col-sm-4" style="background-color:skyblue;">
 
-  </div>
+      <!-- Titulo -->
+      <hr>
+      <h2>DIRECTIVA ESTRUCTURAL ngFor</h2>
+      <hr>
 
-  <!-- Columna (2): Ejemplo con 'ngFor' - Mostrar array ciudades -->
-  <div class="col-sm-4" style="background-color:skyblue;">
-
-    <!-- Titulo -->
-    <hr>
-    <h2>DIRECTIVA ESTRUCTURAL ngFor</h2>
-    <hr>
-
-    <!-- Bucle for recorriendo la lista de ciudades-->
-    <ul>
-      <!-- Mostramos tambien el indice -->
-      <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
-        {{indice}} {{ciudad}}
-      </li>
-    </ul>
-
-    <hr>
-
-  </div>
-
-  <!-- Columna (3): Ejemplo con 'ngSwitch' -->
-  <div class="col-sm-4" style="background-color:lightpink;">
-    <hr>
-    <h2>ngSwitch (Estructural)</h2>
-    <hr>
-
-
-    <!-- Recorremos el listado de ciudades y referenciamos ...-->
-    <!--<ul *ngFor='let usuario of usuarios' [ngSwitch]="usuario.nombre">
-
-      <li *ngSwitchCase="''">
-        {{usuario.nombre}} = Ingeniero
-      </li>
-
-      <li *ngSwitchCase="'Paris'">
-        {{usuario.nombre}} = France
-      </li>
-
-      <li *ngSwitchCase="'Londres'">
-        {{usuario.nombre}} = England
-      </li>
-
-      <li *ngSwitchCase="'Milan'">
-        {{usuario.nombre}} = Italy
-      </li>
-    </ul>-->
-    <hr>
-
-  </div>
-
-</div>
-
-<hr>
-
-<div class="row">
-
-  <!-- Columna (1): Ejemplo con 'ngIf + ngFor' -->
-  <div class="col-sm-4" style="background-color:deepskyblue;">
-    <hr>
-    <h1>Ejemplo ngIf + ngFor</h1>
-    <hr>
-    <button class="btn-success" type="button" (click)="pruebaNgFor()"> Ejecutar ngFor </button>
-
-    <ul>
-
-      <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
-
-        <span *ngIf="indice < 2;else mensaje">
-
+      <!-- Bucle for recorriendo la lista de ciudades-->
+      <ul>
+        <!-- Mostramos tambien el indice -->
+        <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
           {{indice}} {{ciudad}}
+        </li>
+      </ul>
 
-        </span>
+      <hr>
 
-      </li>
-
-    </ul>
-
-    <ng-template #mensaje>Este elemento tiene indice mayor a 2 </ng-template>
-
-  </div>
-
-  <!-- Columna (2): Ejemplo llamada metodo y mostrar mensaje -->
-  <div class="col-sm-4" style="background-color:red;">
-    <hr>
-    <h1>Llamada Boton</h1>
-    <hr>
-    <button class="btn-success" type="button" (click)="pruebaNgIf()"> Ejecutar ngIf </button>
-    <br />
-    <hr>
-    <div>
-      {{mensajeBienvenida}}
     </div>
-    <hr>
+
+    <!-- Columna (3): Ejemplo con 'ngSwitch' -->
+    <div class="col-sm-4" style="background-color:lightpink;">
+      <hr>
+      <h2>ngSwitch (Estructural)</h2>
+      <hr>
+
+
+      <!-- Recorremos el listado de ciudades y referenciamos ...-->
+      <!--<ul *ngFor='let usuario of usuarios' [ngSwitch]="usuario.nombre">
+
+        <li *ngSwitchCase="''">
+          {{usuario.nombre}} = Ingeniero
+        </li>
+
+        <li *ngSwitchCase="'Paris'">
+          {{usuario.nombre}} = France
+        </li>
+
+        <li *ngSwitchCase="'Londres'">
+          {{usuario.nombre}} = England
+        </li>
+
+        <li *ngSwitchCase="'Milan'">
+          {{usuario.nombre}} = Italy
+        </li>
+      </ul>-->
+      <hr>
+
+    </div>
 
   </div>
 
-  <!-- Columna (2): Operacion con Array -->
-  <div class="col-sm-4" style="background-color:deeppink;">
-    <hr>
-    <h1>Operaciones con Array</h1>
-    <hr>
-    <!-- Aqui mostrar un listado-->
-    <!-- Botones de control del array -->
-    <button class="btn-success" type="button" (click)="addItemToArray()" style="margin-right:10px;"> ADD </button>
-    <button class="btn-success" type="button" (click)="removeItemToArray()"> REMOVE </button>
-  </div>
+  <hr>
 
-</div>
+  <!-- ROW (2) -->
+  <div class="row">
+
+    <!-- Columna (1): Ejemplo con 'ngIf + ngFor' -->
+    <div class="col-sm-4" style="background-color:deepskyblue;">
+      <hr>
+      <h1>Ejemplo ngIf + ngFor</h1>
+      <hr>
+      <button class="btn-success" type="button" (click)="pruebaNgFor()"> Ejecutar ngFor </button>
+
+      <ul>
+
+        <li *ngFor='let ciudad of listaCiudades;let indice = index;'>
+
+          <span *ngIf="indice < 2;else mensaje">
+
+            {{indice}} {{ciudad}}
+
+          </span>
+
+        </li>
+
+      </ul>
+
+
+      <ng-template #mensaje>Este elemento tiene indice mayor a 2 </ng-template>
+
+    </div>
+
+    <!-- Columna (2): Ejemplo llamada metodo y mostrar mensaje -->
+    <div class="col-sm-4" style="background-color:red;">
+      <hr>
+      <h1>Llamada Boton</h1>
+      <hr>
+      <button class="btn-success" type="button" (click)="pruebaNgIf()"> Ejecutar ngIf </button>
+      <br />
+      <hr>
+      <div>
+        {{mensajeBienvenida}}
+      </div>
+      <hr>
+
+    </div>
+
+    <!-- Columna (2): Operacion con Array -->
+    <div class="col-sm-4" style="background-color:deeppink;">
+      <hr>
+      <h1>Operaciones con Array</h1>
+      <hr>
+      <!-- Aqui mostrar un listado-->
+      <!-- Botones de control del array -->
+      <button class="btn-success" type="button" (click)="addItemToArray()" style="margin-right:10px;"> ADD </button>
+      <button class="btn-success" type="button" (click)="removeItemToArray()"> REMOVE </button>
+    </div>
+
+  </div>
 
 <hr>
 
@@ -143,70 +150,72 @@
 
 <button class="btn-primary" type="button" style="width:200px;" (click)="cargarDatos()"> Cargar datos </button>
 
-<table border="1" style="width:100%;" id="table">
+<table class="table" border="1" style="width:100%;" id="table">
 
-  <!-- Titulo -->
-  <tr>
-    <td colspan="5" style="text-align: center; padding: 10px;">TITULO DE LA TABLA</td>
-  </tr>
 
-  <!-- Fila (1) -->
-  <tr>
-    <td style="padding:10px;"> Celda a1 </td>
+  <thead class="table-dark">
+    <!-- Titulo -->
+    <tr>
+      <td colspan="5" style="text-align: center; padding: 10px;">TITULO DE LA TABLA</td>
+    </tr>
 
-    <td style="padding:10px;"> Celda a2 </td>
+    <!-- Fila (1) -->
+    <tr>
+      <td style="padding:10px;"> Celda a1 </td>
 
-    <td style="padding:10px;"> Celda a3 </td>
+      <td style="padding:10px;"> Celda a2 </td>
 
-    <td style="padding:10px;"> Celda a4 </td>
+      <td style="padding:10px;"> Celda a3 </td>
 
-    <td style="padding:10px;"> Celda a5 </td>
+      <td style="padding:10px;"> Celda a4 </td>
 
-  </tr>
+      <td style="padding:10px;"> Celda a5 </td>
 
-  <!-- Fila (2) -->
-  <tr>
+    </tr>
 
-    <td style="padding:10px;"> Celda b1 </td>
+    <!-- Fila (2) -->
+    <tr>
 
-    <td style="padding:10px;"> Celda b2 </td>
+      <td style="padding:10px;"> Celda b1 </td>
 
-    <td style="padding:10px;">Celda b3 </td>
+      <td style="padding:10px;"> Celda b2 </td>
 
-    <td style="padding:10px;">Celda b4 </td>
+      <td style="padding:10px;">Celda b3 </td>
 
-    <td style="padding:10px;"> Celda b5 </td>
+      <td style="padding:10px;">Celda b4 </td>
 
-  </tr>
+      <td style="padding:10px;"> Celda b5 </td>
 
-  <!-- Fila (3) -->
-  <tr>
-    <td style="padding:10px;"> Celda c1 </td>
+    </tr>
 
-    <td style="padding:10px;"> Celda c2 </td>
+    <!-- Fila (3) -->
+    <tr>
+      <td style="padding:10px;"> Celda c1 </td>
 
-    <td style="padding:10px;"> Celda c3 </td>
+      <td style="padding:10px;"> Celda c2 </td>
 
-    <td style="padding:10px;"> Celda c4 </td>
+      <td style="padding:10px;"> Celda c3 </td>
 
-    <td style="padding:10px;"> Celda c4 </td>
+      <td style="padding:10px;"> Celda c4 </td>
 
-  </tr>
+      <td style="padding:10px;"> Celda c4 </td>
 
-  <!-- Fila (4) -->
-  <tr>
-    <td style="padding:10px;"> Celda d1 </td>
+    </tr>
 
-    <td style="padding:10px;"> Celda d2 </td>
+    <!-- Fila (4) -->
+    <tr>
+      <td style="padding:10px;"> Celda d1 </td>
 
-    <td style="padding:10px;"> Celda d3 </td>
+      <td style="padding:10px;"> Celda d2 </td>
 
-    <td style="padding:10px;"> Celda d4 </td>
+      <td style="padding:10px;"> Celda d3 </td>
 
-    <td style="padding:10px;"> Celda d5 </td>
+      <td style="padding:10px;"> Celda d4 </td>
 
-  </tr>
+      <td style="padding:10px;"> Celda d5 </td>
 
+    </tr>
+  </thead>
 </table>
 
 
@@ -238,38 +247,33 @@
 
 <div id="print-section">
 
-  <table class="table-primary" style="width:100%;" id="table">
-    <tr>
-      <td style="padding:10px;"> Celda d1 </td>
+  <table class="table" style="width:100%;" id="table">
 
-      <td style="padding:10px;"> Celda d2 </td>
+    <thead class="table-dark">
 
-      <td style="padding:10px;"> Celda d3 </td>
 
-      <td style="padding:10px;"> Celda d4 </td>
 
-      <td style="padding:10px;"> Celda d5 </td>
 
-    </tr>
 
+
+      <tr>
+        <td style="padding:10px;"> Celda d1 </td>
+
+        <td style="padding:10px;"> Celda d2 </td>
+
+        <td style="padding:10px;"> Celda d3 </td>
+
+        <td style="padding:10px;"> Celda d4 </td>
+
+        <td style="padding:10px;"> Celda d5 </td>
+
+      </tr>
+    </thead>
   </table>
 
 </div>
 
-<script>
 
-
-  $(document).ready(function () {
-
-    $("#table").css("border", "1px solid yellow");
-    $("#body").css("background-color", "red");
-
-
-    console.log("Hecho");
-  }
-
-
-</script>
 
 <!--<hr>
 

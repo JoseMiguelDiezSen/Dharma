@@ -146,6 +146,13 @@ export class TestComponent {
 
   // Metodo 2
   showName(int: number) {
+
+    //$(document).ready(function () {
+
+    //  $("#table").css("border", "1px solid yellow");
+
+    //  console.log("Hecho");
+    //}
   }
 
   // Metodo 3 (Obligatorio retorno bolean)
