@@ -1,20 +1,22 @@
-﻿using Arcadia.Models;
+﻿using Dharma.Data;
+using Dharma.Models;
+using Dharma.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Arcadia.Controllers
+namespace Dharma.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class APIController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IUsuario _repo;
 
         // Constructor
-        public APIController(AppDbContext context){
-            _context = context;
+        public APIController(IUsuario repo)
+        {
+            _repo = repo;
         }
 
         // (!) - OBTENER TODOS
@@ -22,9 +24,7 @@ namespace Arcadia.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-           //Este metodo esta en la clase usuarios
-           RepositorioUsuarios repo = new RepositorioUsuarios();
-           return Ok(repo.GetAllUsers());
+           return Ok(_repo.GetAllUsers());
         }
 
         // (2) - OBTENER UN USUARIO POR ID
@@ -32,14 +32,11 @@ namespace Arcadia.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            RepositorioUsuarios repo = new RepositorioUsuarios();
-            var usuario = repo.GetUserById(id);
+            var usuario = _repo.GetUsuarioById(id);
 
-            // Si no hay usuario vinculado al id introducido
             if (usuario == null)
             {
-                var notFound = NotFound("El usuario " + id.ToString() + " no existe.");
-                return notFound;
+                return NotFound($"El usuario {id} no existe.");
             }
             return Ok(usuario);
         }
@@ -49,19 +46,24 @@ namespace Arcadia.Controllers
         [HttpPost]
         public IActionResult AgregarUsuario(Usuario usuario)
         {
-            RepositorioUsuarios repo = new RepositorioUsuarios();
-            repo.AddUser(usuario);
-            return CreatedAtAction(nameof(AgregarUsuario), usuario);
+            var created = _repo.AddUser(usuario);
+            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
 
         // ACTUALIZAR USUARIO
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(Usuario usuario)
+        public IActionResult UpdateUser(int id, Usuario usuario)
         {
-            RepositorioUsuarios repo = new RepositorioUsuarios();
-            repo.AddUser(usuario);
-            return CreatedAtAction(nameof(UpdateUser), usuario);
+            if (usuario == null || usuario.Id == null || usuario.Id != id)
+                return BadRequest();
+
+            var existing = _repo.GetUsuarioById(id);
+            if (existing == null)
+                return NotFound();
+
+            var updated = _repo.UpdateUser(usuario);
+            return Ok(updated);
         }
     }
 }

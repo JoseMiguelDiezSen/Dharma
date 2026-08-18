@@ -1,18 +1,13 @@
-using Arcadia.Models;
+using Dharma.Data;
+using Dharma.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MODELO (1) CADENA DE CONEXION (directamente)
-var connection = "Server=DESKTOP-TP04RI8;database=JsmApp;Trusted_Connection=True";
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
-
-// MODELO (2) CADENA DE CONEXION (definida en el appSettings)
-//builder.Services.AddDbContext<AppDbContext>(FileOptions =>
-//{
-//    FileOptions.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql"));
-//});
+// Configure DbContext using connection string from configuration
+var connection = builder.Configuration.GetConnectionString("ConexionSQL");
+builder.Services.AddDbContext<DharmaDbContext>(options => options.UseSqlServer(connection));
 
 // HABILITAR **CORS**
 var _policyName = "CorsPolicy";
