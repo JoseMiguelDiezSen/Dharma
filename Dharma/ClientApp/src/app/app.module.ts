@@ -53,12 +53,9 @@ import { TestComponent } from './test/test.component';
     TestComponent
   ],
 
-  // Aquí indicamos los módulos que necesitamos utilizar
-  // dentro de este módulo.
+  // Indicamos los módulos que necesitamos utilizar dentro de este módulo
   imports: [
-    // BrowserModule proporciona las funcionalidades necesarias
-    // para ejecutar Angular en el navegador.
-    //
+    // BrowserModule proporciona las funcionalidades necesarias para ejecutar Angular en el navegador.
     // withServerTransition está relacionado con Angular Universal
     // y permite trabajar con aplicaciones que utilizan renderizado
     // en el servidor.
@@ -70,15 +67,12 @@ import { TestComponent } from './test/test.component';
     // Permite utilizar funcionalidades relacionadas con formularios.
     FormsModule,
     RouterModule.forRoot([
-      // Configura las rutas principales de la aplicación.
-      //
-      // forRoot recibe un array donde cada objeto representa una ruta.
+      // Configura las rutas principales de la aplicación -> forRoot recibe un array donde cada objeto representa una ruta.
 
-
-      // Cuando la URL está vacía ("/"), se muestra HomeComponent.
-      // pathMatch: 'full' indica que la URL debe coincidir
-      // completamente con la ruta vacía.
+      // Si la URL está vacía ("/"), se muestra HomeComponent.
+      // pathMatch: 'full' indica que la URL debe coincidir completamente con la ruta vacía.
       { path: '', component: HomeComponent, pathMatch: 'full' },
+
 
       // La URL "/counter" muestra CounterComponent.
       { path: 'counter', component: CounterComponent },
