@@ -1,4 +1,4 @@
-namespace Dharma
+namespace Dharma.Models
 {
     public class WeatherForecast
     {

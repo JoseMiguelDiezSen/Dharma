@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
 });
 
 // Esto no se si es asi
-builder.Services.AddScoped<IUsuario, RepositorioUsuarios>();
+builder.Services.AddScoped<IUsuario, GestionUsuarios>();
 
 
 

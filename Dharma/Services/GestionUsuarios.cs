@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dharma.Services
 {
-    public class RepositorioUsuarios : IUsuario
+    public class GestionUsuarios : IUsuario
     {
         private readonly DharmaDbContext contexto;
         private List<Usuario>? listaUsuarios;
 
-        public RepositorioUsuarios(DharmaDbContext contexto)
+        public GestionUsuarios(DharmaDbContext contexto)
         {
             this.contexto = contexto;
         }
@@ -35,7 +35,7 @@ namespace Dharma.Services
             return usuario;
         }
 
-        // (4) - ACTUALIZAR USUARIO
+        // (4) - ACTUALIZAR USUARIOsE AJUSTAN 
         public Usuario? UpdateUser(Usuario usuario)
         {
             var entry = contexto.Usuarios.Attach(usuario);
