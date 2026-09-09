@@ -5,9 +5,12 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure DbContext using connection string from configuration
-var connection = builder.Configuration.GetConnectionString("ConexionSQL");
-builder.Services.AddDbContext<DharmaDbContext>(options => options.UseSqlServer(connection));
+// Conexion a la BBDD
+var connection = builder.Configuration.GetConnectionString("ConexionSQL")
+    ?? throw new InvalidOperationException("No se encontró la cadena de conexión 'ConexionSQL'.");
+
+builder.Services.AddDbContext<DharmaDbContext>(options =>
+    options.UseSqlServer(connection));
 
 // HABILITAR **CORS**
 var _policyName = "CorsPolicy";
@@ -20,7 +23,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Esto no se si es asi
+// Se registran los servicios de la capa de negocio (GestionUsuarios) para que puedan ser inyectados
 builder.Services.AddScoped<IUsuario, GestionUsuarios>();
 
 
