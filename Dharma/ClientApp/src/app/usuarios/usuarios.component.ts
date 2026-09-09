@@ -36,8 +36,8 @@ export class UsuariosComponent implements OnInit{
         }
 
         // CREATE USER
-        public add() {
-          // mostrar listado
+        public addUser() {
+        
         }
     }
 
