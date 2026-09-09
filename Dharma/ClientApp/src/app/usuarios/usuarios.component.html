@@ -1,95 +1,59 @@
 <h1>USUARIOS</h1>
 
-
-
-
-<div class="row" style="margin-bottom:10px;">
-  <button type="button" class="btn-warning col-md-2"><i class="fa fa-plus" aria-hidden="true"></i>CREAR USUARIO</button>
+<div class="row d-flex justify-content-end" style="margin-bottom:10px;">
+  <button type="button" class="btn-warning col-md-2" (click)="addUser()"><i class="fa fa-plus" aria-hidden="true"></i>CREAR USUARIO</button>
 </div>
 
-
-
-
 <div class="row">
-  
-
   
   <table class="table" style="width:100%;" id="table">
     <thead class="table-dark">
       <!-- Titulo -->
       <tr>
-        <td colspan="5" style="text-align: center; padding: 10px;">LISTADO DE USUARIOS</td>
+        <td colspan="7" style="text-align: center; padding: 10px;">LISTADO DE USUARIOS</td>
       </tr>
 
-      <!-- Fila (1) -->
-      <tr>
-        <td style="padding:10px;"> Celda a1 </td>
-
-        <td style="padding:10px;"> Celda a2 </td>
-
-        <td style="padding:10px;"> Celda a3 </td>
-
-        <td style="padding:10px;"> Celda a4 </td>
-
-        <td style="padding:10px;"> Celda a5 </td>
-
+      <!-- Cabecera de los campos -->
+      <tr class="text-center">
+        <th style="padding:10px;">ID</th>
+        <th style="padding:10px;">NOMBRE</th>
+        <th style="padding:10px;">EMAIL</th>
+        <th style="padding:10px;">TELÉFONO</th>
+        <th style="padding:10px;">PASSWORD</th>
+        <th style="padding:10px;">F. ALTA</th>
+        <th style="padding:10px;">ACCIONES</th>
       </tr>
 
-      <!-- Fila (2) -->
+      <!--Campos con los valores-->
       <tr>
+        <td style="padding:10px;">Celda a1</td>
+        <td style="padding:10px;">Celda a2</td>
+        <td style="padding:10px;">Celda a3</td>
+        <td style="padding:10px;">Celda a4</td>
+        <td style="padding:10px;">Celda a5</td>
+        <td style="padding:10px;">Celda a6</td>
 
-        <td style="padding:10px;"> Celda b1 </td>
 
-        <td style="padding:10px;"> Celda b2 </td>
+        <td style="padding:10px;" class="text-center">
 
-        <td style="padding:10px;">Celda b3 </td>
+          <button type="button"
+                  class="btn-warning"
+                  style="margin-right: 10px;"
+                  (click)="editUser()">
+            EDITAR
+          </button>
 
-        <td style="padding:10px;">Celda b4 </td>
-
-        <td style="padding:10px;"> Celda b5 </td>
-
-      </tr>
-
-      <!-- Fila (3) -->
-      <tr>
-        <td style="padding:10px;"> Celda c1 </td>
-
-        <td style="padding:10px;"> Celda c2 </td>
-
-        <td style="padding:10px;"> Celda c3 </td>
-
-        <td style="padding:10px;"> Celda c4 </td>
-
-        <td style="padding:10px;"> Celda c4 </td>
-
-      </tr>
-
-      <!-- Fila (4) -->
-      <tr>
-        <td style="padding:10px;"> Celda d1 </td>
-
-        <td style="padding:10px;"> Celda d2 </td>
-
-        <td style="padding:10px;"> Celda d3 </td>
-
-        <td style="padding:10px;"> Celda d4 </td>
-
-        <td style="padding:10px;"> Celda d5 </td>
-
+          <button type="button"
+                  class="btn-warning"
+                  (click)="deleteUser()">
+            ELIMINAR
+          </button>
+        </td>
       </tr>
 
     </thead>
 
   </table>
-
-
-  <div>
-
-    <button type="button" class="btn-warning" style="margin-right: 10px;">EDITAR USUARIO</button>
-
-    <button type="button" class="btn-warning">ELIMINAR USUARIO</button>
-
-  </div>
 
 </div>
 
