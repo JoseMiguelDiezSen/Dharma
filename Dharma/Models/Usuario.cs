@@ -10,7 +10,7 @@ namespace Dharma.Models
 
         public string Email { get; set; } = string.Empty;
 
-        public string? Telefono { get; set; }
+        public int Telefono { get; set; }
 
         public string Password { get; set; } = string.Empty;
 

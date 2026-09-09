@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'usuarios',
@@ -17,16 +17,13 @@ export class UsuariosComponent implements OnInit {
   id: number = 0;
 
   // CONSTRUCTOR
-  //constructor(private _avRoute: ActivatedRoute, public http: Http, private _router: Router, @Inject('BASE_URL') baseUrl: string) {
-  //  debugger;
-  //  this.myAppUrl = baseUrl;
-  //  if (this._avRoute.snapshot.params["id"]) {
-  //    this.id = this._avRoute.snapshot.params["id"];
-  //  }
-  //}
+  constructor(private http: HttpClient) {
+  }
 
   // METODO OnInit Si implemento OnInit en la clase, debo declarar la funcion obligatoriamente
   ngOnInit() {
+
+    this.getUsers();
     //let headers = new Headers();
     //headers.append('Content-Type', 'application/json; charset=utf-8');
     //this.http.get(this.myAppUrl + "api/APIController/" + this.id, { headers: headers })
@@ -34,7 +31,6 @@ export class UsuariosComponent implements OnInit {
     //    self.modelData = JSON.parse(res._body);
     //  });
   }
-
   // ADD USER
   public addUser() {
     console.log('Has pulsado CREAR USUARIO');
@@ -45,23 +41,23 @@ export class UsuariosComponent implements OnInit {
     console.log('Has pulsado MODIFICAR USUARIO');
   }
 
-  // CREATE USER
+  // DELETE USER
   public deleteUser() {
     console.log('Has pulsado BORRAR USUARIO');
   }
 
-
-  //-------------------------------------------?¿?¿
-
-
   // GET USER BY ID
   public getUser() {
-    console.log('Has pulsado CREAR USUARIO');
+    console.log('GET usuario por ID');
   }
 
   // GET ALL USERS
   public getUsers() {
-
+    console.log('ENTRANDO EN GET USERS');
+    this.http.get('https://localhost:44467/api/Usuarios')
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 }
 
