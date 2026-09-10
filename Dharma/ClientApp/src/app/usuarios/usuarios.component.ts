@@ -17,6 +17,7 @@ export class UsuariosComponent implements OnInit {
   id: number = 0;
 
   usuarios: any[] = [];
+  modalAgregarUsuario: boolean = false;
 
   // ...
   // CONSTRUCTOR
@@ -36,7 +37,9 @@ export class UsuariosComponent implements OnInit {
   }
   // ADD USER
   public addUser() {
+
     console.log('Has pulsado CREAR USUARIO');
+    this.modalAgregarUsuario = true;
   }
 
   // MODIFY USER
