@@ -31,7 +31,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\usuarios\agregar-usuario\agregar-usuario.component.ts" />
+    <None Remove="ClientApp\src\app\usuarios\agregarUsuario.component.ts" />
+    <None Remove="ClientApp\src\app\usuarios\eliminar-usuario\eliminar-usuario.component.ts" />
+    <None Remove="ClientApp\src\app\usuarios\modificar-usuario\modificar-usuario.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\usuarios\agregar-usuario\agregar-usuario.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\usuarios\eliminar-usuario\eliminar-usuario.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\usuarios\modificar-usuario\modificar-usuario.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
