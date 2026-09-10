@@ -8,6 +8,14 @@ import { Component } from '@angular/core';
 export class NavMenuComponent {
   isExpanded = false;
 
+  // Rutas imagenes
+  readonly imageLogo = "../../assets/imageButton.svg";
+  jsmIcono = "../../assets/logoJSMTransparente.png"
+
+
+
+
+
   collapse() {
     this.isExpanded = false;
   }
