@@ -16,6 +16,9 @@ export class UsuariosComponent implements OnInit {
   myAppUrl: string = "";
   id: number = 0;
 
+  usuarios: any[] = [];
+
+  // ...
   // CONSTRUCTOR
   constructor(private http: HttpClient) {
   }
@@ -53,10 +56,12 @@ export class UsuariosComponent implements OnInit {
 
   // GET ALL USERS
   public getUsers() {
+
     console.log('ENTRANDO EN GET USERS');
-    this.http.get('https://localhost:44467/api/Usuarios')
+    this.http.get<any[]>('/api/Usuarios')
       .subscribe(response => {
         console.log(response);
+        this.usuarios = response;
       });
   }
 }

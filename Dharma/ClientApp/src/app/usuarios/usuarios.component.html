@@ -5,12 +5,15 @@
 </div>
 
 <div class="row">
-  
+
   <table class="table" style="width:100%;" id="table">
     <thead class="table-dark">
+
       <!-- Titulo -->
       <tr>
-        <td colspan="7" style="text-align: center; padding: 10px;">LISTADO DE USUARIOS</td>
+        <td colspan="7" style="text-align: center; padding: 10px;">
+          LISTADO DE USUARIOS
+        </td>
       </tr>
 
       <!-- Cabecera de los campos -->
@@ -24,15 +27,14 @@
         <th style="padding:10px;">ACCIONES</th>
       </tr>
 
-      <!--Campos con los valores-->
-      <tr>
-        <td style="padding:10px;">Celda a1</td>
-        <td style="padding:10px;">Celda a2</td>
-        <td style="padding:10px;">Celda a3</td>
-        <td style="padding:10px;">Celda a4</td>
-        <td style="padding:10px;">Celda a5</td>
-        <td style="padding:10px;">Celda a6</td>
-
+      <!-- Filas de usuarios -->
+      <tr *ngFor="let usuario of usuarios">
+        <td style="padding:10px;" class="text-center">{{ usuario.idUsuario }}</td>
+        <td style="padding:10px;" class="text-center">{{ usuario.nombreUsuario }}</td>
+        <td style="padding:10px;" class="text-center">{{ usuario.email }}</td>
+        <td style="padding:10px;" class="text-center">{{ usuario.telefono }}</td>
+        <td style="padding:10px;" class="text-center">{{ usuario.password }}</td>
+        <td style="padding:10px;" class="text-center">{{ usuario.fechaAlta | date:'dd/MM/yyyy' }}</td>
 
         <td style="padding:10px;" class="text-center">
 
@@ -40,7 +42,7 @@
                   class="btn btn-warning"
                   style="margin-right: 10px;"
                   (click)="editUser()">
-            <i class="fa fa-pencil" aria-hidden="true"></i> 
+            <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
 
           <button type="button"
@@ -48,12 +50,11 @@
                   (click)="deleteUser()">
             <i class="fa fa-times" aria-hidden="true"></i>
           </button>
+
         </td>
       </tr>
 
     </thead>
-
   </table>
-
 </div>
 
