@@ -31,6 +31,11 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 // Importa el componente de usuarios.
 import { UsuariosComponent } from './usuarios/usuarios.component';
 
+import { AnadirUsuarioComponent } from './usuarios/agregar-usuario/agregar-usuario.component';
+
+import { ModificarUsuarioComponent } from './usuarios/modificar-usuario/modificar-usuario.component';
+
+
 // Importa el componente de la tienda.
 import { ShopComponent } from './shop/shop.component';
 
@@ -49,6 +54,8 @@ import { TestComponent } from './test/test.component';
     CounterComponent,
     FetchDataComponent,
     UsuariosComponent,
+    AnadirUsuarioComponent,
+    ModificarUsuarioComponent,
     ShopComponent,
     TestComponent
   ],
