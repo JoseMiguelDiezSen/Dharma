@@ -6,5 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./agregar-usuario.component.css']
 })
 export class AnadirUsuarioComponent {
+  modalAgregarUsuario: boolean = false;
+  usuarios: any[] = [];
 
+  addUser(): void {
+    this.modalAgregarUsuario = true;
+  }
+
+  editUser(): void {
+  }
+
+  deleteUser(): void {
+  }
 }

@@ -90,6 +90,9 @@ import { TestComponent } from './test/test.component';
       // La URL "/usuarios" muestra UsuariosComponent.
       { path: 'usuarios', component: UsuariosComponent },
 
+      // La URL "/modificar-usuario" muestra ModificarUsuarioComponent.
+      { path: 'modificar-usuario', component: ModificarUsuarioComponent },
+
       // La URL "/shop" muestra ShopComponent.
       { path: 'shop', component: ShopComponent },
 

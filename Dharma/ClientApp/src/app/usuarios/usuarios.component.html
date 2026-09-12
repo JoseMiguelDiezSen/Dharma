@@ -108,6 +108,87 @@
 
 
 
+<!-- MODAL MODIFICAR USUARIO -->
+<div *ngIf="modalModificarUsuario"
+     class="modal fade show"
+     style="display:block;"
+     tabindex="-1">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa fa-user" aria-hidden="true"></i>
+          MODIFICAR USUARIO
+        </h5>
+
+        <button type="button"
+                class="btn-close"
+                (click)="modalModificarUsuario = false">
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <div class="row">
+
+          <!-- NOMBRE -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Nombre</label>
+            <input type="text"
+                   class="form-control">
+          </div>
+
+          <!-- EMAIL -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email"
+                   class="form-control">
+          </div>
+
+          <!-- TELÉFONO -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Teléfono</label>
+            <input type="text"
+                   class="form-control">
+          </div>
+
+          <!-- PASSWORD -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Password</label>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer d-flex justify-content-start">
+
+        <button type="button"
+                class="btn btn-outline-success">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          ACEPTAR
+        </button>
+
+        <button type="button"
+                class="btn btn-outline-danger"
+                (click)="modalModificarUsuario = false">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          CANCELAR
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
 
 
 
