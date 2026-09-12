@@ -36,6 +36,10 @@ import { AnadirUsuarioComponent } from './usuarios/agregar-usuario/agregar-usuar
 import { ModificarUsuarioComponent } from './usuarios/modificar-usuario/modificar-usuario.component';
 
 
+import { EliminarUsuarioComponent } from './usuarios/eliminar-usuario/eliminar-usuario.component';
+
+
+
 // Importa el componente de la tienda.
 import { ShopComponent } from './shop/shop.component';
 
@@ -56,6 +60,7 @@ import { TestComponent } from './test/test.component';
     UsuariosComponent,
     AnadirUsuarioComponent,
     ModificarUsuarioComponent,
+    EliminarUsuarioComponent,
     ShopComponent,
     TestComponent
   ],
@@ -92,6 +97,12 @@ import { TestComponent } from './test/test.component';
 
       // La URL "/modificar-usuario" muestra ModificarUsuarioComponent.
       { path: 'modificar-usuario', component: ModificarUsuarioComponent },
+
+
+      // La URL "/modificar-usuario" muestra ModificarUsuarioComponent.
+      { path: 'eliminar-usuario', component: EliminarUsuarioComponent },
+
+
 
       // La URL "/shop" muestra ShopComponent.
       { path: 'shop', component: ShopComponent },
