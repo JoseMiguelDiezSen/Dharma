@@ -19,6 +19,7 @@ export class UsuariosComponent implements OnInit {
   usuarios: any[] = [];
   modalAgregarUsuario: boolean = false;
   modalModificarUsuario: boolean = false;
+  modalEliminarUsuario: boolean = false;
 
   // ...
   // CONSTRUCTOR
@@ -52,6 +53,7 @@ export class UsuariosComponent implements OnInit {
   // DELETE USER
   public deleteUser() {
     console.log('Has pulsado BORRAR USUARIO');
+    this.modalEliminarUsuario = true;
   }
 
   // GET USER BY ID
