@@ -15,6 +15,7 @@ export class EliminarUsuarioComponent {
     this.modalEliminarUsuario = true;
   }
 
+/*  Editar usuario*/
   editUser(): void {
   }
 
