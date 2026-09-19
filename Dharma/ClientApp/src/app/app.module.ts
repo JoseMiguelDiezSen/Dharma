@@ -46,6 +46,9 @@ import { AvionesComponent } from './aviones/aviones.component';
 // Importa el componente de barcos.
 import { BarcosComponent } from './barcos/barcos.component';
 
+// Importa el componente de satelites.
+import { SatelitesComponent } from './satelites/satelites.component';
+
 // @NgModule es un decorador de Angular.
 // Sirve para configurar este módulo y decirle a Angular
 // qué componentes pertenecen a él y qué módulos necesita.
@@ -61,7 +64,8 @@ import { BarcosComponent } from './barcos/barcos.component';
     EliminarUsuarioComponent,
     TestComponent,
     AvionesComponent,
-    BarcosComponent
+    BarcosComponent,
+    SatelitesComponent
   ],
 
   // Indicamos los módulos que necesitamos utilizar dentro de este módulo
@@ -95,6 +99,9 @@ import { BarcosComponent } from './barcos/barcos.component';
 
       // La URL "/barcos" muestra BarcosComponent.
       { path: 'barcos', component: BarcosComponent },
+
+      // La URL "/satelites" muestra SatelitesComponent.
+      { path: 'satelites', component: SatelitesComponent },
 
       // La URL "/modificar-usuario" muestra ModificarUsuarioComponent.
       { path: 'modificar-usuario', component: ModificarUsuarioComponent },
