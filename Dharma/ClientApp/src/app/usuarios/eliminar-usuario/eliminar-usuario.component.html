@@ -14,9 +14,10 @@
           ELIMINAR USUARIO
         </h5>
 
+        <!-- Al pulsar la X, llama a cerrarModal() que avisa al padre -->
         <button type="button"
                 class="btn-close"
-                (click)="modalEliminarUsuario = false">
+                (click)="cerrarModal()">
         </button>
       </div>
 
@@ -34,9 +35,10 @@
           ACEPTAR
         </button>
 
+        <!-- Al pulsar Cancelar, llama a cerrarModal() que avisa al padre -->
         <button type="button"
                 class="btn btn-outline-danger"
-                (click)="modalEliminarUsuario = false">
+                (click)="cerrarModal()">
           <i class="fa fa-times" aria-hidden="true"></i>
           CANCELAR
         </button>

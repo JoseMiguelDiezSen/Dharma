@@ -62,9 +62,18 @@
 
 
 <!--
-  [abrir]="modalAgregarUsuario" -> Pasa el valor del padre al hijo para abrirlo.
-  (cerrar)="modalAgregarUsuario = false" -> Cuando el hijo se cierra, resetea la variable del padre a false.
+  VENTANAS MODALES HIJAS:
+  - [abrir]: Comunicación PADRE -> HIJO. Envía true cuando pulsamos el botón para abrir el modal.
+  - (cerrar): Comunicación HIJO -> PADRE. El hijo emite este evento al pulsar 'Cancelar' o la 'X'.
+    Ejecutamos '= false' para apagar el interruptor del padre; si no lo reseteamos a false,
+    el padre seguiría pensando que está abierto y no nos dejaría volver a abrirlo una segunda vez.
 -->
+
+<!-- Modal para Crear / Añadir Usuario -->
 <app-anadir-usuario [abrir]="modalAgregarUsuario" (cerrar)="modalAgregarUsuario = false"></app-anadir-usuario>
+
+<!-- Modal para Editar / Modificar Usuario -->
 <app-modificar-usuario [abrir]="modalModificarUsuario" (cerrar)="modalModificarUsuario = false"></app-modificar-usuario>
-<app-eliminar-usuario [abrir]="modalEliminarUsuario"></app-eliminar-usuario>
+
+<!-- Modal para Borrar / Eliminar Usuario -->
+<app-eliminar-usuario [abrir]="modalEliminarUsuario" (cerrar)="modalEliminarUsuario = false"></app-eliminar-usuario>
