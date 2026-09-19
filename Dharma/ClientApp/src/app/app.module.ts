@@ -22,8 +22,6 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 // Importa el componente que representa la página principal.
 import { HomeComponent } from './home/home.component';
 
-// Importa el componente del contador.
-import { CounterComponent } from './counter/counter.component';
 
 // Importa el componente utilizado para obtener y mostrar datos.
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
@@ -46,6 +44,9 @@ import { ShopComponent } from './shop/shop.component';
 // Importa el componente de pruebas.
 import { TestComponent } from './test/test.component';
 
+// Importa el componente de aviones.
+import { AvionesComponent } from './aviones/aviones.component';
+
 // @NgModule es un decorador de Angular.
 // Sirve para configurar este módulo y decirle a Angular
 // qué componentes pertenecen a él y qué módulos necesita.
@@ -55,14 +56,14 @@ import { TestComponent } from './test/test.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
     FetchDataComponent,
     UsuariosComponent,
     AnadirUsuarioComponent,
     ModificarUsuarioComponent,
     EliminarUsuarioComponent,
     ShopComponent,
-    TestComponent
+    TestComponent,
+    AvionesComponent
   ],
 
   // Indicamos los módulos que necesitamos utilizar dentro de este módulo
@@ -86,14 +87,15 @@ import { TestComponent } from './test/test.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
 
 
-      // La URL "/counter" muestra CounterComponent.
-      { path: 'counter', component: CounterComponent },
 
       // La URL "/fetch-data" muestra FetchDataComponent.
       { path: 'fetch-data', component: FetchDataComponent },
 
       // La URL "/usuarios" muestra UsuariosComponent.
       { path: 'usuarios', component: UsuariosComponent },
+
+      // La URL "/aviones" muestra AvionesComponent.
+      { path: 'aviones', component: AvionesComponent },
 
       // La URL "/modificar-usuario" muestra ModificarUsuarioComponent.
       { path: 'modificar-usuario', component: ModificarUsuarioComponent },

@@ -15,8 +15,18 @@ code {
   border-color: #1861ac;
 }
 
-/* Fondo naranja para toda la pantalla */
-body {
+/* Fondo naranja completo SOLO para la pantalla de Usuarios */
+body:has(app-usuarios) {
   background-color: orange;
 }
 
+
+/* Fondo azul completo SOLO para la pantalla Home */
+body:has(app-home) {
+  background-color: blue;
+}
+
+/* Fondo azul cielo SOLO para la pantalla de Aviones */
+body:has(app-aviones) {
+  background-color: skyblue;
+}

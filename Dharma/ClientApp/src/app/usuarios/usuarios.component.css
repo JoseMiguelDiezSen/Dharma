@@ -1,1 +1,19 @@
-/* Estilos específicos para el componente Usuarios */
+/* Alineación centrada para que el contenido quede exactamente en la mitad de la celda */
+table th,
+table td {
+  vertical-align: middle;
+}
+
+/* Botón redondo para agregar usuario */
+#btnAgregar {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50%;
+}
+
+
+/*Estilos del icono del boton defs agregar usuario*/
+#iconoAgregar {
+  color:red;
+  padding-right: 2px !important;
+}
