@@ -43,7 +43,7 @@
           <button type="button"
                   class="btn btn-warning"
                   style="margin-right: 10px;"
-                  (click)="editUser()">
+                  (click)="editUser(usuario)">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
 
@@ -78,7 +78,11 @@
 </app-anadir-usuario>
 
 <!-- Modal para Editar / Modificar Usuario -->
-<app-modificar-usuario [abrir]="modalModificarUsuario" (cerrar)="modalModificarUsuario = false"></app-modificar-usuario>
+<app-modificar-usuario [abrir]="modalModificarUsuario"
+                       [usuario]="usuarioSeleccionado"
+                       (cerrar)="modalModificarUsuario = false"
+                       (usuarioModificado)="getUsers()">
+</app-modificar-usuario>
 
 <!-- Modal para Borrar / Eliminar Usuario -->
 <app-eliminar-usuario [abrir]="modalEliminarUsuario" (cerrar)="modalEliminarUsuario = false"></app-eliminar-usuario>

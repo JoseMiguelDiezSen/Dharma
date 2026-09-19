@@ -21,6 +21,8 @@ export class UsuariosComponent implements OnInit {
   modalAgregarUsuario: boolean = false;
   modalModificarUsuario: boolean = false;
   modalEliminarUsuario: boolean = false;
+  // Almacena el usuario seleccionado en la fila de la tabla para enviarlo al modal
+  usuarioSeleccionado: any = null;
 
   // ...
   // CONSTRUCTOR
@@ -40,9 +42,10 @@ export class UsuariosComponent implements OnInit {
     this.modalAgregarUsuario = true;
   }
 
-  // MODIFY USER
-  public editUser() {
-    console.log('Has pulsado MODIFICAR USUARIO');
+  // MODIFY USER: Recibe el usuario seleccionado en la fila y abre el modal
+  public editUser(usuario: any) {
+    console.log('Has pulsado MODIFICAR USUARIO', usuario);
+    this.usuarioSeleccionado = usuario;
     this.modalModificarUsuario = true;
   }
 

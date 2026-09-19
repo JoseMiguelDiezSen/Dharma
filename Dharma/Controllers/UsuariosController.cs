@@ -78,7 +78,6 @@ namespace Dharma.Controllers
         [HttpPut("{idUsuario}")]
         public IActionResult UpdateUser(int idUsuario, Usuario usuario) { 
 
-
             if (usuario == null || usuario.IdUsuario != idUsuario)
                 return BadRequest();
 

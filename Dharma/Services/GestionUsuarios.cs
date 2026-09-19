@@ -40,13 +40,23 @@ namespace Dharma.Services
             return usuario;
         }
 
-        // (4) - ACTUALIZAR USUARIOsE AJUSTAN 
+        // (4) - ACTUALIZAR USUARIO
         public Usuario? UpdateUser(Usuario usuario)
         {
-            var entry = contexto.Usuarios.Attach(usuario);
-            entry.State = EntityState.Modified;
-            contexto.SaveChanges();
-            return usuario;
+            if (contexto.Usuarios != null)
+            {
+                // Obtenemos la entidad rastreada en el contexto
+                var existing = contexto.Usuarios.Find(usuario.IdUsuario);
+                if (existing != null)
+                {
+                    // Copiamos los valores nuevos al registro existente
+                    contexto.Entry(existing).CurrentValues.SetValues(usuario);
+                    contexto.SaveChanges();
+                    return existing;
+                }
+            }
+
+            return null;
         }
 
         // (5) - ELIMINAR USUARIO
