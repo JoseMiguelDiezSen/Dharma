@@ -30,12 +30,7 @@ export class UsuariosComponent implements OnInit {
   ngOnInit() {
 
     this.getUsers();
-    //let headers = new Headers();
-    //headers.append('Content-Type', 'application/json; charset=utf-8');
-    //this.http.get(this.myAppUrl + "api/APIController/" + this.id, { headers: headers })
-    //  .subscribe((res: Response) => {
-    //    self.modelData = JSON.parse(res._body);
-    //  });
+  
   }
   // ADD USER
   public addUser() {

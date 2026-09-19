@@ -67,10 +67,15 @@
   - (cerrar): Comunicación HIJO -> PADRE. El hijo emite este evento al pulsar 'Cancelar' o la 'X'.
     Ejecutamos '= false' para apagar el interruptor del padre; si no lo reseteamos a false,
     el padre seguiría pensando que está abierto y no nos dejaría volver a abrirlo una segunda vez.
+  - (usuarioAgregado): Comunicación HIJO -> PADRE. Se dispara cuando el usuario se guarda en la BD,
+    y el padre llama a getUsers() para recargar la tabla automáticamente.
 -->
 
 <!-- Modal para Crear / Añadir Usuario -->
-<app-anadir-usuario [abrir]="modalAgregarUsuario" (cerrar)="modalAgregarUsuario = false"></app-anadir-usuario>
+<app-anadir-usuario [abrir]="modalAgregarUsuario" 
+                    (cerrar)="modalAgregarUsuario = false"
+                    (usuarioAgregado)="getUsers()">
+</app-anadir-usuario>
 
 <!-- Modal para Editar / Modificar Usuario -->
 <app-modificar-usuario [abrir]="modalModificarUsuario" (cerrar)="modalModificarUsuario = false"></app-modificar-usuario>

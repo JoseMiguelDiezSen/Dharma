@@ -1,4 +1,4 @@
-﻿using Dharma.Data;
+using Dharma.Data;
 using Dharma.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,8 +30,13 @@ namespace Dharma.Services
         // (3) - CREATE USER
         public Usuario AddUser(Usuario usuario)
         {
-            contexto.Usuarios.Add(usuario);
-            contexto.SaveChanges();
+            // Verificamos que el DbSet de Usuarios no sea nulo
+            if (contexto.Usuarios != null)
+            {
+                contexto.Usuarios.Add(usuario);
+                contexto.SaveChanges();
+            }
+
             return usuario;
         }
 

@@ -3,7 +3,10 @@ import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core
 // Importamos HttpClient para poder realizar peticiones HTTP al API
 import { HttpClient } from '@angular/common/http';
 
-// Decorador que define la configuración del componente
+
+
+
+// Decorador: Define la configuración del componente
 @Component({
   // Nombre de la etiqueta HTML que representa este componente
   selector: 'app-anadir-usuario',
@@ -14,6 +17,9 @@ import { HttpClient } from '@angular/common/http';
 // Archivo CSS que contiene los estilos del componente
   styleUrls: ['./agregar-usuario.component.css']
 })
+
+
+
 
 // Clase del componente para agregar usuarios
 export class AnadirUsuarioComponent implements OnChanges {
@@ -31,7 +37,7 @@ export class AnadirUsuarioComponent implements OnChanges {
   // Controla si mostramos la contraseña
   mostrarPassword: boolean = false;
 
-  // AQUÍ VA EL CONSTRUCTOR
+  // Constructor
   constructor(private http: HttpClient) {
   }
 
@@ -54,5 +60,27 @@ export class AnadirUsuarioComponent implements OnChanges {
     this.cerrar.emit();
   }
 
+  // Avisa al componente padre cuando se crea el usuario
+  @Output() usuarioAgregado = new EventEmitter<void>();
+
+  // Añade el nuevo usuario enviándolo a la API
+  addUser(): void {
+    // Asigna la fecha y hora actual ya que el formulario no la pide
+    this.usuario.fechaAlta = new Date();
+    // Convierte el texto del input a número para coincidir con el int de C#
+    this.usuario.telefono = Number(this.usuario.telefono);
+    // Envía el usuario por POST a la API; .subscribe() ejecuta la petición y espera respuesta
+    this.http.post('/api/Usuarios', this.usuario).subscribe(() => {
+
+      // Avisa al padre para refrescar la tabla
+      this.usuarioAgregado.emit();
+
+      // Limpia el formulario
+      this.usuario = {};
+
+      // Cierra la ventana modal
+      this.cerrarModal();          
+    });
+  }
 }
 
