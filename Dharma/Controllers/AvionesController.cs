@@ -19,9 +19,9 @@ namespace Dharma.Controllers
 
         // GET /api/Aviones - Obtiene los aviones en tiempo real desde OpenSky
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] double? lamin, [FromQuery] double? lomin, [FromQuery] double? lamax, [FromQuery] double? lomax)
         {
-            var aviones = await _gestionAviones.ObtenerAvionesAsync();
+            var aviones = await _gestionAviones.ObtenerAvionesAsync(lamin, lomin, lamax, lomax);
             return Ok(aviones);
         }
     }

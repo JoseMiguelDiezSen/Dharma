@@ -64,7 +64,7 @@ export class UsuariosComponent implements OnInit {
   // GET ALL USERS
   public getUsers() {
 
-    console.log('ENTRANDO EN GET USERS');
+    
     this.http.get<any[]>('/api/Usuarios')
       .subscribe(response => {
         console.log(response);
