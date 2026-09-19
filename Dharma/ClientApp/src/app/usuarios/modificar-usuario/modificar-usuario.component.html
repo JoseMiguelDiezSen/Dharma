@@ -14,7 +14,8 @@
           MODIFICAR USUARIO
         </h5>
 
-        <button type="button" class="btn-close" (click)="modalModificarUsuario = false"></button>
+        <!-- Al pulsar la X, llama a cerrarModal() que avisa al padre -->
+        <button type="button" class="btn-close" (click)="cerrarModal()"></button>
       </div>
 
       <!-- BODY -->
@@ -77,7 +78,8 @@
           ACEPTAR
         </button>
 
-        <button type="button" class="btn btn-outline-danger" (click)="modalModificarUsuario = false">
+        <!-- Al pulsar Cancelar, llama a cerrarModal() que avisa al padre -->
+        <button type="button" class="btn btn-outline-danger" (click)="cerrarModal()">
           <i class="fa fa-times" aria-hidden="true"></i>
           CANCELAR
         </button>

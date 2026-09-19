@@ -66,5 +66,5 @@
   (cerrar)="modalAgregarUsuario = false" -> Cuando el hijo se cierra, resetea la variable del padre a false.
 -->
 <app-anadir-usuario [abrir]="modalAgregarUsuario" (cerrar)="modalAgregarUsuario = false"></app-anadir-usuario>
-<app-modificar-usuario [abrir]="modalModificarUsuario"></app-modificar-usuario>
+<app-modificar-usuario [abrir]="modalModificarUsuario" (cerrar)="modalModificarUsuario = false"></app-modificar-usuario>
 <app-eliminar-usuario [abrir]="modalEliminarUsuario"></app-eliminar-usuario>
