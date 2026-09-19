@@ -23,8 +23,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Se registran los servicios de la capa de negocio (GestionUsuarios) para que puedan ser inyectados
+// Se registran los servicios de la capa de negocio (GestionUsuarios y GestionAviones)
 builder.Services.AddScoped<IUsuario, GestionUsuarios>();
+builder.Services.AddHttpClient<IAviones, GestionAviones>();
 
 
 

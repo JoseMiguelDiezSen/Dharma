@@ -1,3 +1,4 @@
+using Dharma.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dharma.Controllers
@@ -8,11 +9,20 @@ namespace Dharma.Controllers
     [ApiController]
     public class AvionesController : ControllerBase
     {
-        // Método Index principal
-        [HttpGet]
-        public IActionResult Index()
+        private readonly IAviones _gestionAviones;
+
+        // Inyectamos la interfaz IAviones a través del constructor
+        public AvionesController(IAviones gestionAviones)
         {
-            return Ok();
+            _gestionAviones = gestionAviones;
+        }
+
+        // GET /api/Aviones - Obtiene los aviones en tiempo real desde OpenSky
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var aviones = await _gestionAviones.ObtenerAvionesAsync();
+            return Ok(aviones);
         }
     }
 }

@@ -49,9 +49,10 @@ export class UsuariosComponent implements OnInit {
     this.modalModificarUsuario = true;
   }
 
-  // DELETE USER
-  public deleteUser() {
-    console.log('Has pulsado BORRAR USUARIO');
+  // DELETE USER: Recibe el usuario seleccionado en la fila y abre el modal de eliminación
+  public deleteUser(usuario: any) {
+    console.log('Has pulsado BORRAR USUARIO', usuario);
+    this.usuarioSeleccionado = usuario;
     this.modalEliminarUsuario = true;
   }
 

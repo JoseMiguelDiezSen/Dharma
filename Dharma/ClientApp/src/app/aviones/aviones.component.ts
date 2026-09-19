@@ -15,14 +15,36 @@ import { HttpClient } from '@angular/common/http';
 export class AvionesComponent implements OnInit {
 
   // Título de la pantalla
-  titulo: string = 'Gestión de Aviones';
+  titulo: string = 'Vuelos en Tiempo Real (OpenSky)';
+
+  // Lista de aviones devueltos por el backend
+  aviones: any[] = [];
+
+  // Indicador de carga
+  cargando: boolean = false;
 
   // Constructor con inyección de HttpClient
   constructor(private http: HttpClient) { }
 
   // Se ejecuta al cargar el componente
   ngOnInit(): void {
-    console.log('Componente Aviones cargado');
+    this.obtenerAviones();
+  }
+
+  // Llama a la API para obtener los aviones en tiempo real
+  obtenerAviones(): void {
+    this.cargando = true;
+    this.http.get<any[]>('/api/Aviones')
+      .subscribe({
+        next: (data) => {
+          this.aviones = data;
+          this.cargando = false;
+        },
+        error: (err) => {
+          console.error('Error al obtener aviones de OpenSky:', err);
+          this.cargando = false;
+        }
+      });
   }
 
 }

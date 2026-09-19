@@ -23,14 +23,17 @@
 
       <!-- BODY -->
       <div class="modal-body">
-        <p class="m-0">¿Desea realmente eliminar a este usuario?</p>
+        <p class="m-0">
+          ¿Desea realmente eliminar al usuario <strong>{{ usuario?.nombreUsuario }}</strong> (ID: {{ usuario?.idUsuario }})?
+        </p>
       </div>
 
       <!-- FOOTER -->
       <div class="modal-footer d-flex justify-content-start">
 
         <button type="button"
-                class="btn btn-outline-success">
+                class="btn btn-outline-success"
+                (click)="deleteUser()">
           <i class="fa fa-check" aria-hidden="true"></i>
           ACEPTAR
         </button>
