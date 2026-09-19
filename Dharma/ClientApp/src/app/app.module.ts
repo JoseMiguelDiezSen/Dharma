@@ -23,8 +23,6 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 
 
-// Importa el componente utilizado para obtener y mostrar datos.
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
 // Importa el componente de usuarios.
 import { UsuariosComponent } from './usuarios/usuarios.component';
@@ -38,14 +36,15 @@ import { EliminarUsuarioComponent } from './usuarios/eliminar-usuario/eliminar-u
 
 
 
-// Importa el componente de la tienda.
-import { ShopComponent } from './shop/shop.component';
 
 // Importa el componente de pruebas.
 import { TestComponent } from './test/test.component';
 
 // Importa el componente de aviones.
 import { AvionesComponent } from './aviones/aviones.component';
+
+// Importa el componente de barcos.
+import { BarcosComponent } from './barcos/barcos.component';
 
 // @NgModule es un decorador de Angular.
 // Sirve para configurar este módulo y decirle a Angular
@@ -56,14 +55,13 @@ import { AvionesComponent } from './aviones/aviones.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    FetchDataComponent,
     UsuariosComponent,
     AnadirUsuarioComponent,
     ModificarUsuarioComponent,
     EliminarUsuarioComponent,
-    ShopComponent,
     TestComponent,
-    AvionesComponent
+    AvionesComponent,
+    BarcosComponent
   ],
 
   // Indicamos los módulos que necesitamos utilizar dentro de este módulo
@@ -88,14 +86,15 @@ import { AvionesComponent } from './aviones/aviones.component';
 
 
 
-      // La URL "/fetch-data" muestra FetchDataComponent.
-      { path: 'fetch-data', component: FetchDataComponent },
 
       // La URL "/usuarios" muestra UsuariosComponent.
       { path: 'usuarios', component: UsuariosComponent },
 
       // La URL "/aviones" muestra AvionesComponent.
       { path: 'aviones', component: AvionesComponent },
+
+      // La URL "/barcos" muestra BarcosComponent.
+      { path: 'barcos', component: BarcosComponent },
 
       // La URL "/modificar-usuario" muestra ModificarUsuarioComponent.
       { path: 'modificar-usuario', component: ModificarUsuarioComponent },
@@ -106,8 +105,6 @@ import { AvionesComponent } from './aviones/aviones.component';
 
 
 
-      // La URL "/shop" muestra ShopComponent.
-      { path: 'shop', component: ShopComponent },
 
       // La URL "/test" muestra TestComponent.
       { path: 'test', component: TestComponent }
