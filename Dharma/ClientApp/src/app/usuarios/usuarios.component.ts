@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'usuarios',
-  templateUrl: './usuarios.component.html'
+  templateUrl: './usuarios.component.html',
+  styleUrls: ['./usuarios.component.css']
 })
 
 // Esta clase implementa OnInit que es 
