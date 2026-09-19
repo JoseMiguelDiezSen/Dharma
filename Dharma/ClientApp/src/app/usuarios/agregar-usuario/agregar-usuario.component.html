@@ -18,9 +18,10 @@
           AGREGAR USUARIO
         </h5>
 
+        <!-- Al pulsar la X, llama a cerrarModal() que avisa al padre -->
         <button type="button"
                 class="btn-close"
-                (click)="modalAgregarUsuario = false">
+                (click)="cerrarModal()">
         </button>
       </div>
 
@@ -54,9 +55,10 @@
           <div class="mb-3 col-md-6">
             <label class="form-label">Password</label>
 
-            <!--<div class="input-group">
+            <div class="input-group">
               <input [type]="mostrarPassword ? 'text' : 'password'"
-                     class="form-control">
+                     class="form-control"
+                     [(ngModel)]="usuario.password">
 
               <button type="button"
                       class="btn btn-outline-secondary"
@@ -66,9 +68,11 @@
                    [class.fa-eye]="!mostrarPassword"
                    [class.fa-eye-slash]="mostrarPassword"
                    aria-hidden="true">
-                </i>-->
-            <!--</button>-->
-            <!--</div>-->
+                </i>
+
+              </button>
+            </div>
+          </div>
           </div>
 
         </div>
@@ -84,75 +88,15 @@
           ACEPTAR
         </button>
 
+        <!-- Al pulsar Cancelar, llama a cerrarModal() que avisa al padre -->
         <button type="button"
                 class="btn btn-outline-danger"
-                (click)="modalAgregarUsuario = false">
+                (click)="cerrarModal()">
           <i class="fa fa-times" aria-hidden="true"></i>
           CANCELAR
         </button>
 
       </div>
 
-    </div>
   </div>
 </div>
-
-
-
-
-
-
-<div class="row">
-
-  <table class="table" style="width:100%;" id="table">
-    <thead class="table-dark">
-
-      <!-- Titulo -->
-      <tr>
-        <td colspan="7" style="text-align: center; padding: 10px;">
-          LISTADO DE USUARIOS
-        </td>
-      </tr>
-
-      <!-- Cabecera de los campos -->
-      <tr class="text-center">
-        <th style="padding:10px;">ID</th>
-        <th style="padding:10px;">NOMBRE</th>
-        <th style="padding:10px;">EMAIL</th>
-        <th style="padding:10px;">TELÉFONO</th>
-        <th style="padding:10px;">PASSWORD</th>
-        <th style="padding:10px;">F. ALTA</th>
-        <th style="padding:10px;">ACCIONES</th>
-      </tr>
-
-      <!-- Filas de usuarios -->
-      <tr *ngFor="let usuario of usuarios">
-        <td style="padding:10px;" class="text-center">{{ usuario.idUsuario }}</td>
-        <td style="padding:10px;" class="text-center">{{ usuario.nombreUsuario }}</td>
-        <td style="padding:10px;" class="text-center">{{ usuario.email }}</td>
-        <td style="padding:10px;" class="text-center">{{ usuario.telefono }}</td>
-        <td style="padding:10px;" class="text-center">{{ usuario.password }}</td>
-        <td style="padding:10px;" class="text-center">{{ usuario.fechaAlta | date:'dd/MM/yyyy' }}</td>
-
-        <td style="padding:10px;" class="text-center">
-
-          <button type="button"
-                  class="btn btn-warning"
-                  style="margin-right: 10px;"
-                  (click)="editUser()">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-          </button>
-
-          <button type="button"
-                  class="btn btn-warning"
-                  (click)="deleteUser()">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-
-        </td>
-      </tr>
-
-    </thead>
-  </table>
-</div>
-

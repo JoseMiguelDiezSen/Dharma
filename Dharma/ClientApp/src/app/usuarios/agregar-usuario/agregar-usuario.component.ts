@@ -1,21 +1,58 @@
-import { Component } from '@angular/core';
+// Importamos Component, Input, Output, EventEmitter y OnChanges desde el núcleo de Angular
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+// Importamos HttpClient para poder realizar peticiones HTTP al API
+import { HttpClient } from '@angular/common/http';
 
+// Decorador que define la configuración del componente
 @Component({
+  // Nombre de la etiqueta HTML que representa este componente
   selector: 'app-anadir-usuario',
+
+  // Archivo HTML que contiene la vista del componente
   templateUrl: './agregar-usuario.component.html',
+
+// Archivo CSS que contiene los estilos del componente
   styleUrls: ['./agregar-usuario.component.css']
 })
-export class AnadirUsuarioComponent {
+
+// Clase del componente para agregar usuarios
+export class AnadirUsuarioComponent implements OnChanges {
+
+  // Recibe desde el componente padre el valor de modalAgregarUsuario
+  @Input() abrir: boolean = false;
+
+  // Controla si el modal de agregar usuario está visible
   modalAgregarUsuario: boolean = false;
-  usuarios: any[] = [];
 
-  addUser(): void {
-    this.modalAgregarUsuario = true;
+  // Datos del usuario que estamos creando
+  usuario: any = {};
+
+
+  // Controla si mostramos la contraseña
+  mostrarPassword: boolean = false;
+
+  // AQUÍ VA EL CONSTRUCTOR
+  constructor(private http: HttpClient) {
   }
 
-  editUser(): void {
+  // Se ejecuta cuando cambia el valor recibido mediante @Input
+  ngOnChanges(): void {
+
+    // Copiamos el valor recibido del padre a la variable que utiliza el modal
+    this.modalAgregarUsuario = this.abrir;
   }
 
-  deleteUser(): void {
+  // @Output(): emisor de eventos para avisar al componente padre
+  @Output() cerrar = new EventEmitter<void>();
+
+  // Método que oculta el modal y emite el evento al padre
+  cerrarModal(): void {
+    // 1. Oculta el modal en este componente
+    this.modalAgregarUsuario = false;
+
+    // 2. Notifica al componente padre para que ponga su variable a false
+    this.cerrar.emit();
   }
+
 }
+

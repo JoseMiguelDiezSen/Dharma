@@ -1,24 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-modificar-usuario',
   templateUrl: './modificar-usuario.component.html',
   styleUrls: ['./modificar-usuario.component.css']
 })
-export class ModificarUsuarioComponent {
+export class ModificarUsuarioComponent implements OnChanges {
 
-  modalAgregarUsuario: boolean = false;
+  @Input() abrir: boolean = false;
 
-  usuarios: any[] = [];
+  modalModificarUsuario: boolean = false;
+  mostrarPassword: boolean = false;
 
-  addUser(): void {
-    this.modalAgregarUsuario = true;
+  ngOnChanges(): void {
+    this.modalModificarUsuario = this.abrir;
   }
 
   editUser(): void {
-  }
-
-  deleteUser(): void {
   }
 
 }
