@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="dharma.client/dharma.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="Dharma.Server/Dharma.Server.csproj" />
+</Solution>

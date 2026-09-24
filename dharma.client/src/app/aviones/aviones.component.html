@@ -1,0 +1,301 @@
+<div class="radar-container position-relative">
+
+  <!-- MAPA DE FONDO A PANTALLA COMPLETA (2D LEAFLET) -->
+  <div id="mapa-aviones" class="radar-map" [class.radar-oculto]="modo3D"></div>
+
+  <!-- GLOBO TRIDIMENSIONAL A PANTALLA COMPLETA (3D CESIUM) -->
+  <div id="cesium-container" class="radar-cesium" [class.radar-visible]="modo3D"></div>
+
+  <!-- CARTEL CENTRADO DE CARGA 3D -->
+  <div *ngIf="cargando3D" class="hud-loading-3d-overlay d-flex flex-column align-items-center justify-content-center">
+    <div class="hud-loading-3d-card p-4 text-center shadow-lg">
+      <i class="fa fa-cube fa-spin fa-3x text-warning mb-3"></i>
+      <h5 class="text-white fw-bold mb-1">Cargando 3D...</h5>
+      <p class="text-white-50 small mb-0">Iniciando globo terráqueo y telemetría</p>
+    </div>
+  </div>
+
+  <!-- BARRA DE CONTROL FLOTANTE SUPERIOR (HUD) -->
+  <div class="hud-top-bar d-flex flex-nowrap align-items-center justify-content-between gap-3 p-2 px-3">
+    <!-- Extremo izquierdo: Estado en vivo y total de vuelos (fijo, nunca salta) -->
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      <span class="radar-pulse-dot"></span>
+      <span *ngIf="cargando" class="badge bg-warning text-dark">
+        <i class="fa fa-spinner fa-spin"></i> Escaneando...
+      </span>
+      <span *ngIf="!cargando" class="badge bg-success d-inline-flex align-items-center gap-1 py-1 px-2">
+        <i class="fa fa-plane"></i> {{ aviones.length }} VUELOS
+      </span>
+      <!-- Aviso de emergencia (fijo si existe) -->
+      <span *ngIf="vuelosEmergencia.length > 0" 
+            class="badge alerta-emergencia-hud d-flex align-items-center gap-1 py-1 px-2"
+            (click)="centrarEnAvion(vuelosEmergencia[0])"
+            title="¡Clic para enfocar el vuelo en emergencia!">
+        <i class="fa fa-exclamation-triangle"></i>
+        <span>🚨 {{ vuelosEmergencia.length }} EMERGENCIA</span>
+      </span>
+    </div>
+
+    <!-- Centro: Carrusel deslizable de aerolíneas (desplazamiento horizontal sin salto de línea) -->
+    <div class="hud-aerolineas-carrusel mx-2">
+      <span *ngFor="let resumen of resumenAerolineas"
+            class="badge hud-aerolinea-badge d-inline-flex align-items-center gap-1 py-1 px-2"
+            [style.background-color]="resumen.color"
+            [style.color]="resumen.texto"
+            title="Vuelos de {{ resumen.nombre }} en pantalla">
+        <i class="fa fa-plane"></i>
+        <span class="text-uppercase">{{ resumen.nombre }} {{ resumen.total }}</span>
+      </span>
+    </div>
+
+    <!-- Extremo derecho: Herramientas flotantes fijas (En Vivo, Refrescar, Ver Lista) -->
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      <!-- Botón de auto-refresco -->
+      <button type="button" 
+              class="btn btn-sm" 
+              [ngClass]="autoRefresco ? 'btn-success' : 'btn-outline-secondary text-white'" 
+              (click)="alternarAutoRefresco()"
+              title="Auto-refresco cada 5 segundos (clic para pausar/reanudar)">
+        <i class="fa fa-clock" [class.fa-spin]="autoRefresco"></i> {{ autoRefresco ? 'En Vivo' : 'Pausado' }}
+      </button>
+
+      <!-- Botón de refresco manual -->
+      <button type="button" class="btn btn-sm btn-outline-light" (click)="obtenerAviones()" [disabled]="cargando" title="Actualizar ahora">
+        <i class="fa fa-refresh" [class.fa-spin]="cargando"></i>
+      </button>
+
+      <!-- Botón para ver la tabla como panel flotante -->
+      <button type="button" 
+              class="btn btn-sm" 
+              [ngClass]="mostrarTabla ? 'btn-warning text-dark' : 'btn-outline-light'" 
+              (click)="alternarTabla()">
+        <i class="fa fa-list"></i> {{ mostrarTabla ? 'Ocultar Lista' : 'Ver Lista' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- BOTÓN CONMUTADOR FLOTANTE 2D / 3D (ESQUINA SUPERIOR DERECHA, BAJO EL HUD) -->
+  <div class="hud-floating-toggle-3d">
+    <button type="button" 
+            class="btn btn-sm hud-btn-3d d-flex align-items-center gap-1" 
+            [ngClass]="modo3D ? 'btn-warning text-dark fw-bold' : 'btn-outline-light'" 
+            (click)="alternarModo3D()"
+            [disabled]="cargando3D"
+            title="Alternar entre vista 2D y 3D">
+      <i class="fa fa-cube" [class.fa-spin]="cargando3D"></i>
+      <span>{{ cargando3D ? 'Iniciando...' : (modo3D ? '2D' : '3D') }}</span>
+    </button>
+  </div>
+
+  <!-- NOTIFICACIONES EN TIEMPO REAL: TRÁFICO AEROPUERTO DE BARAJAS (LEMD) -->
+  <div *ngIf="notificacionesBarajas.length > 0" class="hud-notificaciones-barajas">
+    <div *ngFor="let notif of notificacionesBarajas" 
+         class="hud-notificacion-toast p-2 px-3"
+         [ngClass]="notif.tipo"
+         (click)="centrarEnAvion(notif.avion)"
+         title="Clic para centrar y seguir este vuelo">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <span class="badge" [ngClass]="notif.tipo === 'llegada' ? 'bg-info text-dark' : 'bg-success text-white'">
+          <i class="fa fa-plane"></i>
+          {{ notif.tipo === 'llegada' ? '🛬 LLEGADA MAD' : '🛫 SALIDA MAD' }}
+        </span>
+        <button type="button" 
+                class="btn-close btn-close-white" 
+                style="font-size: 0.65rem;" 
+                (click)="cerrarNotificacion(notif, $event)">
+        </button>
+      </div>
+      <div class="small fw-semibold text-white">
+        <span class="text-warning font-monospace">{{ notif.avion.callsign || notif.avion.icao24 }}</span>
+        <span *ngIf="notif.avion.aerolinea" class="text-white-50"> ({{ notif.avion.aerolinea }})</span>
+      </div>
+      <div class="text-white-50" style="font-size: 0.78rem;">
+        {{ notif.mensaje }}
+      </div>
+    </div>
+  </div>
+
+  <!-- TARJETA FLOTANTE DE DETALLES DEL AVIÓN SELECCIONADO -->
+  <div *ngIf="avionSeleccionado" class="hud-flight-card p-3 shadow-lg" style="width: 320px;">
+    <!-- Cabecera: Vuelo, Compañía y País -->
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div>
+        <h5 class="m-0 text-warning font-monospace">
+          <i class="fa fa-plane"></i> {{ avionSeleccionado.callsign || avionSeleccionado.icao24 }}
+        </h5>
+        <div class="text-info small fw-bold mt-1">
+          <i class="fa fa-building"></i> {{ avionSeleccionado.aerolinea }}
+        </div>
+        <small class="text-white-50"><i class="fa fa-globe"></i> {{ avionSeleccionado.paisOrigen || 'Origen no disponible' }}</small>
+      </div>
+      <button type="button" class="btn-close btn-close-white" (click)="cerrarDetalle()"></button>
+    </div>
+
+    <!-- Banner de alerta roja si el vuelo transmite código de emergencia (Squawk 7700 / 7600 / 7500) -->
+    <div *ngIf="avionSeleccionado.squawk === '7700' || avionSeleccionado.squawk === '7600' || avionSeleccionado.squawk === '7500'" 
+         class="p-2 mb-2 rounded text-white text-center fw-bold small"
+         [ngClass]="avionSeleccionado.squawk === '7600' ? 'bg-warning text-dark' : 'bg-danger'">
+      <i class="fa fa-exclamation-triangle"></i> {{ obtenerTextoEmergencia(avionSeleccionado.squawk) }}
+      <span class="d-block font-monospace">Squawk: {{ avionSeleccionado.squawk }}</span>
+    </div>
+
+    <!-- Fotografía real de la aeronave si está disponible -->
+    <div *ngIf="detallesVuelo?.foto" class="mb-2 text-center">
+      <img [src]="detallesVuelo.foto" alt="Foto aeronave" class="img-fluid rounded border border-secondary border-opacity-50" style="max-height: 100px; width: 100%; object-fit: cover;">
+    </div>
+
+    <!-- Ruta visual Origen -> Destino -->
+    <div *ngIf="detallesVuelo?.origenIata || detallesVuelo?.destinoIata" class="p-2 mb-2 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25">
+      <div class="d-flex justify-content-between align-items-center text-center">
+        <div style="flex: 1;">
+          <span class="fs-5 fw-bold text-warning font-monospace">{{ detallesVuelo.origenIata || '---' }}</span>
+          <small class="d-block text-white-50 text-truncate" style="max-width: 105px;">{{ detallesVuelo.origenCiudad || detallesVuelo.origenNombre }}</small>
+        </div>
+        <div class="text-white-50 px-2">
+          <i class="fa fa-plane fa-lg text-info"></i>
+          <span class="d-block text-uppercase" style="font-size: 0.6rem; letter-spacing: 0.5px;">EN RUTA</span>
+        </div>
+        <div style="flex: 1;">
+          <span class="fs-5 fw-bold text-warning font-monospace">{{ detallesVuelo.destinoIata || '---' }}</span>
+          <small class="d-block text-white-50 text-truncate" style="max-width: 105px;">{{ detallesVuelo.destinoCiudad || detallesVuelo.destinoNombre }}</small>
+        </div>
+      </div>
+
+      <!-- Barra de progreso dinámico del vuelo con avión verde y estela -->
+      <div *ngIf="progresoVuelo !== null" class="flight-progress-container px-1 pt-2">
+        <div class="flight-progress-track">
+          <div class="flight-progress-fill" [style.width.%]="progresoVuelo"></div>
+          <i class="fa fa-plane flight-progress-plane" [style.left.%]="progresoVuelo"></i>
+        </div>
+        <div class="d-flex justify-content-between text-white-50 mt-1" style="font-size: 0.68rem;">
+          <span>Origen</span>
+          <span class="text-success fw-bold">{{ progresoVuelo }}% en vuelo</span>
+          <span>Destino</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ficha técnica: Modelo y Matrícula -->
+    <div *ngIf="detallesVuelo?.modelo || detallesVuelo?.matricula" class="mb-2 p-2 rounded bg-white bg-opacity-10 small">
+      <div *ngIf="detallesVuelo.modelo" class="d-flex justify-content-between">
+        <span class="text-white-50">Modelo:</span>
+        <strong class="text-white">{{ (detallesVuelo.fabricante ? detallesVuelo.fabricante + ' ' : '') + detallesVuelo.modelo }}</strong>
+      </div>
+      <div *ngIf="detallesVuelo.matricula" class="d-flex justify-content-between mt-1">
+        <span class="text-white-50">Matrícula:</span>
+        <span class="badge bg-secondary font-monospace">{{ detallesVuelo.matricula }}</span>
+      </div>
+    </div>
+
+    <!-- Indicador de carga de detalles si aún están llegando -->
+    <div *ngIf="cargandoDetalles && !detallesVuelo" class="text-center text-white-50 small my-1">
+      <i class="fa fa-spinner fa-spin"></i> Obteniendo ruta y modelo...
+    </div>
+
+    <hr class="my-2 border-secondary"/>
+
+    <!-- Telemetría en vivo -->
+    <div class="row g-2 text-white small">
+      <div class="col-6">
+        <span class="text-white-50 d-block">Altitud</span>
+        <strong>{{ avionSeleccionado.altitud != null ? (avionSeleccionado.altitud | number:'1.0-0') + ' m' : 'N/D' }}</strong>
+        <span *ngIf="avionSeleccionado.tasaVertical != null && avionSeleccionado.tasaVertical > 1" class="text-success ms-1">↑</span>
+        <span *ngIf="avionSeleccionado.tasaVertical != null && avionSeleccionado.tasaVertical < -1" class="text-danger ms-1">↓</span>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Velocidad</span>
+        <strong>{{ avionSeleccionado.velocidad != null ? (avionSeleccionado.velocidad | number:'1.0-0') + ' km/h' : 'N/D' }}</strong>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Rumbo</span>
+        <strong>{{ avionSeleccionado.rumbo != null ? (avionSeleccionado.rumbo | number:'1.0-0') + '°' : 'N/D' }}</strong>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Estado</span>
+        <span class="badge" [ngClass]="(avionSeleccionado.squawk === '7700' || avionSeleccionado.squawk === '7500') ? 'bg-danger' : (avionSeleccionado.enTierra ? 'bg-secondary' : 'bg-success')">
+          {{ (avionSeleccionado.squawk === '7700' || avionSeleccionado.squawk === '7500') ? 'EMERGENCIA' : (avionSeleccionado.enTierra ? 'En Tierra' : 'En Vuelo') }}
+        </span>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Transpondedor</span>
+        <strong [ngClass]="(avionSeleccionado.squawk === '7700' || avionSeleccionado.squawk === '7500') ? 'text-danger fw-bold' : (avionSeleccionado.squawk === '7600' ? 'text-warning' : '')">
+          {{ avionSeleccionado.squawk ? avionSeleccionado.squawk : 'N/D' }}
+        </strong>
+      </div>
+
+      <div class="col-12 mt-2">
+        <button type="button" class="btn btn-sm btn-outline-warning w-100" (click)="centrarEnAvion(avionSeleccionado)">
+          <i class="fa fa-crosshairs"></i> Centrar cámara en este vuelo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL FLOTANTE DE LA TABLA COMPLETA DE VUELOS -->
+  <div *ngIf="mostrarTabla" class="hud-table-overlay p-3 shadow-lg">
+    <div class="d-flex justify-content-between align-items-center mb-3 text-white">
+      <h5 class="m-0"><i class="fa fa-table text-warning"></i> Listado de Aeronaves ({{ avionesFiltrados.length }})</h5>
+      <div class="d-flex align-items-center gap-3">
+        <!-- Buscador integrado en la propia tabla -->
+        <div class="input-group input-group-sm hud-search" style="width: 250px;">
+          <span class="input-group-text bg-transparent border-0 text-white-50"><i class="fa fa-search"></i></span>
+          <input type="text" 
+                 class="form-control bg-transparent text-white border-0" 
+                 placeholder="Filtrar por vuelo o país..." 
+                 [(ngModel)]="filtroVuelo">
+        </div>
+        <button type="button" class="btn-close btn-close-white" (click)="mostrarTabla = false"></button>
+      </div>
+    </div>
+
+    <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
+      <table class="table table-dark table-hover table-sm align-middle m-0 text-center">
+        <thead class="table-secondary text-dark sticky-top">
+          <tr>
+            <th>VUELO</th>
+            <th>AEROLÍNEA</th>
+            <th>PAÍS</th>
+            <th>ALTITUD</th>
+            <th>VELOCIDAD</th>
+            <th>RUMBO</th>
+            <th>ESTADO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let avion of avionesFiltrados" 
+              (click)="centrarEnAvion(avion)" 
+              style="cursor:pointer;" 
+              [class.table-danger]="avion.squawk === '7700' || avion.squawk === '7500'"
+              [class.table-warning]="avion.squawk === '7600'"
+              title="Clic para centrar cámara y ver detalles">
+            <td>
+              <strong class="text-warning">{{ avion.callsign || avion.icao24 }}</strong>
+              <span *ngIf="avion.squawk === '7700' || avion.squawk === '7500'" class="badge bg-danger ms-1">🚨 7700</span>
+              <span *ngIf="avion.squawk === '7600'" class="badge bg-warning text-dark ms-1">⚠️ 7600</span>
+            </td>
+            <td><span class="text-info fw-semibold">{{ avion.aerolinea }}</span></td>
+            <td>{{ avion.paisOrigen }}</td>
+            <td>{{ avion.altitud != null ? (avion.altitud | number:'1.0-0') + ' m' : 'N/D' }}</td>
+            <td>{{ avion.velocidad != null ? (avion.velocidad | number:'1.0-0') + ' km/h' : 'N/D' }}</td>
+            <td>{{ avion.rumbo != null ? (avion.rumbo | number:'1.0-0') + '°' : 'N/D' }}</td>
+            <td>
+              <span class="badge" [ngClass]="(avion.squawk === '7700' || avion.squawk === '7500') ? 'bg-danger' : (avion.enTierra ? 'bg-secondary' : 'bg-success')">
+                {{ (avion.squawk === '7700' || avion.squawk === '7500') ? 'EMERGENCIA' : (avion.enTierra ? 'Tierra' : 'Vuelo') }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="avionesFiltrados.length === 0">
+            <td colspan="7" class="text-center p-3 text-white-50">
+              No hay vuelos que coincidan con el filtro.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

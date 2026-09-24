@@ -1,0 +1,77 @@
+using Dharma.Data;
+using Dharma.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Dharma.Services
+{
+    public class GestionUsuarios : IUsuario
+    {
+        private readonly DharmaDbContext contexto;
+        private List<Usuario>? listaUsuarios;
+
+        public GestionUsuarios(DharmaDbContext contexto)
+        {
+            this.contexto = contexto;
+        }
+
+        // (1) - GET ALL USERS
+        public List<Usuario> GetAllUsers()
+        {
+            listaUsuarios = contexto.Usuarios?.ToList<Usuario>();
+            return listaUsuarios ?? new List<Usuario>();
+        }
+
+        // (2) - GET ONE USER BY ID
+        public Usuario? GetUsuarioById(int Id)
+        {
+            return contexto.Usuarios.Find(Id);
+        }
+
+        // (3) - CREATE USER
+        public Usuario AddUser(Usuario usuario)
+        {
+            // Verificamos que el DbSet de Usuarios no sea nulo
+            if (contexto.Usuarios != null)
+            {
+                contexto.Usuarios.Add(usuario);
+                contexto.SaveChanges();
+            }
+
+            return usuario;
+        }
+
+        // (4) - ACTUALIZAR USUARIO
+        public Usuario? UpdateUser(Usuario usuario)
+        {
+            if (contexto.Usuarios != null)
+            {
+                // Obtenemos la entidad rastreada en el contexto
+                var existing = contexto.Usuarios.Find(usuario.IdUsuario);
+                if (existing != null)
+                {
+                    // Copiamos los valores nuevos al registro existente
+                    contexto.Entry(existing).CurrentValues.SetValues(usuario);
+                    contexto.SaveChanges();
+                    return existing;
+                }
+            }
+
+            return null;
+        }
+
+        // (5) - ELIMINAR USUARIO
+        public Usuario? DeleteUser(int Id)
+        {
+            Usuario? usuario = contexto.Usuarios.Find(Id);
+
+            if (usuario != null)
+            {
+                contexto.Usuarios.Remove(usuario);
+                contexto.SaveChanges();
+            }
+
+            return usuario;
+        }
+    }
+}
+

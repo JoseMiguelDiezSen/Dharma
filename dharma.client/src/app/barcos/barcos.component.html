@@ -1,0 +1,250 @@
+<!-- Cabecera principal y contenedor radar náutico -->
+<div class="radar-container position-relative">
+
+  <!-- MAPA DE FONDO A PANTALLA COMPLETA (2D LEAFLET) -->
+  <div id="mapa-barcos" class="radar-map"></div>
+
+  <!-- BARRA DE CONTROL FLOTANTE SUPERIOR (HUD) -->
+  <div class="hud-top-bar d-flex flex-nowrap align-items-center justify-content-between gap-3 p-2 px-3">
+    <!-- Extremo izquierdo: Estado en vivo y total de barcos -->
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      <span class="radar-pulse-dot"></span>
+      <span *ngIf="cargando" class="badge bg-warning text-dark">
+        <i class="fa fa-spinner fa-spin"></i> Escaneando...
+      </span>
+      <span *ngIf="!cargando" class="badge bg-success d-inline-flex align-items-center gap-1 py-1 px-2">
+        <i class="fa fa-ship"></i> {{ barcos.length }} BARCOS
+      </span>
+    </div>
+
+    <!-- Centro: Carrusel deslizable de categorías de barcos -->
+    <div class="hud-categorias-carrusel mx-2">
+      <span *ngFor="let resumen of resumenTipos"
+            class="badge hud-tipo-badge d-inline-flex align-items-center gap-1 py-1 px-2"
+            [style.background-color]="resumen.color"
+            [style.color]="resumen.texto"
+            title="Barcos de tipo {{ resumen.nombre }} en pantalla">
+        <i class="fa fa-ship"></i>
+        <span class="text-uppercase">{{ resumen.nombre }} {{ resumen.total }}</span>
+      </span>
+    </div>
+
+    <!-- Extremo derecho: En Vivo, Refrescar, Ver Lista -->
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      <!-- Botón de auto-refresco -->
+      <button type="button" 
+              class="btn btn-sm" 
+              [ngClass]="autoRefresco ? 'btn-success' : 'btn-outline-secondary text-white'" 
+              (click)="alternarAutoRefresco()"
+              title="Auto-refresco cada 5 segundos (clic para pausar/reanudar)">
+        <i class="fa fa-clock" [class.fa-spin]="autoRefresco"></i> {{ autoRefresco ? 'En Vivo' : 'Pausado' }}
+      </button>
+
+      <!-- Botón de refresco manual -->
+      <button type="button" class="btn btn-sm btn-outline-light" (click)="obtenerBarcos()" [disabled]="cargando" title="Actualizar ahora">
+        <i class="fa fa-refresh" [class.fa-spin]="cargando"></i>
+      </button>
+
+      <!-- Botón para ver la tabla como panel flotante -->
+      <button type="button" 
+              class="btn btn-sm" 
+              [ngClass]="mostrarTabla ? 'btn-warning text-dark' : 'btn-outline-light'" 
+              (click)="alternarTabla()">
+        <i class="fa fa-list"></i> {{ mostrarTabla ? 'Ocultar Lista' : 'Ver Lista' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- TARJETA FLOTANTE DE DETALLES DEL BARCO SELECCIONADO -->
+  <div *ngIf="barcoSeleccionado" class="hud-ship-card p-3 shadow-lg" style="width: 320px;">
+    <!-- Cabecera: Nombre, Tipo y País -->
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div>
+        <h5 class="m-0 text-warning font-monospace">
+          <i class="fa fa-ship"></i> {{ barcoSeleccionado.nombre || ('MMSI: ' + barcoSeleccionado.mmsi) }}
+        </h5>
+        <div class="text-info small fw-bold mt-1 d-flex flex-wrap gap-1">
+          <span class="badge" [style.background-color]="obtenerColorTipo(barcoSeleccionado.tipo)">
+            {{ barcoSeleccionado.tipoDescripcion }}
+          </span>
+          <!-- Badge de la Naviera / Operador comercial -->
+          <span *ngIf="datosEnriquecidos?.naviera" 
+                class="badge d-inline-flex align-items-center gap-1"
+                [style.background-color]="datosEnriquecidos.naviera.color">
+            <i class="fa" [ngClass]="datosEnriquecidos.naviera.icono"></i> {{ datosEnriquecidos.naviera.nombre }}
+          </span>
+        </div>
+        <small class="text-white-50 mt-1 d-flex align-items-center gap-1">
+          <i class="fa fa-flag" aria-hidden="true"></i>
+          <span>Bandera / Registro:</span>
+          <strong class="text-white">{{ barcoSeleccionado.bandera }} {{ barcoSeleccionado.pais }}</strong>
+        </small>
+      </div>
+      <button type="button" class="btn-close btn-close-white" (click)="cerrarDetalle()"></button>
+    </div>
+
+    <!-- Ficha de Capacidad estimada de Pasajeros y Vehículos (Cruceros / Ferries / Contenedores) -->
+    <div *ngIf="datosEnriquecidos?.capacidad" class="p-2 mb-2 rounded bg-info bg-opacity-10 border border-info border-opacity-25 text-white small">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fa fa-lg text-info" [ngClass]="datosEnriquecidos.capacidad.icono"></i>
+        <div>
+          <strong class="d-block text-info">{{ datosEnriquecidos.capacidad.texto }}</strong>
+          <small class="text-white-50 d-block" style="font-size: 0.72rem;">{{ datosEnriquecidos.capacidad.detalle }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destino, ETA y Barra de Progreso Náutica -->
+    <div *ngIf="barcoSeleccionado.destino || datosEnriquecidos?.puerto" class="p-2 mb-2 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="text-white-50 d-block" style="font-size: 0.72rem;">DESTINO</span>
+          <strong class="text-warning text-truncate d-block" style="max-width: 180px;">
+            <ng-container *ngIf="datosEnriquecidos?.puerto; else destinoOriginal">
+              {{ datosEnriquecidos.puerto.bandera }} {{ datosEnriquecidos.puerto.nombre }}
+            </ng-container>
+            <ng-template #destinoOriginal>
+              {{ barcoSeleccionado.destino }}
+            </ng-template>
+          </strong>
+        </div>
+        <div *ngIf="barcoSeleccionado.eta" class="text-end">
+          <span class="text-white-50 d-block" style="font-size: 0.72rem;">ETA</span>
+          <span class="badge bg-secondary font-monospace">{{ barcoSeleccionado.eta }}</span>
+        </div>
+      </div>
+
+      <!-- Barra de progreso náutico con barco en movimiento y cuenta atrás en millas -->
+      <div *ngIf="datosEnriquecidos?.navegacion" class="nautical-progress-container px-1 pt-2">
+        <div class="nautical-progress-track">
+          <div class="nautical-progress-fill" [style.width.%]="datosEnriquecidos.navegacion.porcentaje"></div>
+          <i class="fa fa-ship nautical-progress-ship" [style.left.%]="datosEnriquecidos.navegacion.porcentaje"></i>
+        </div>
+        <div class="d-flex justify-content-between text-white-50 mt-1" style="font-size: 0.68rem;">
+          <span>En ruta</span>
+          <span class="text-info fw-bold">{{ datosEnriquecidos.navegacion.tiempoRestante }}</span>
+          <span>{{ datosEnriquecidos.puerto ? datosEnriquecidos.puerto.nombre : 'Destino' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dimensiones e Identificadores -->
+    <div *ngIf="barcoSeleccionado.eslora || barcoSeleccionado.callsign || barcoSeleccionado.imo" class="mb-2 p-2 rounded bg-white bg-opacity-10 small">
+      <div *ngIf="barcoSeleccionado.eslora" class="d-flex justify-content-between">
+        <span class="text-white-50">Dimensiones:</span>
+        <strong class="text-white">{{ barcoSeleccionado.eslora | number:'1.0-0' }}m × {{ barcoSeleccionado.manga | number:'1.0-0' }}m</strong>
+      </div>
+      <div *ngIf="barcoSeleccionado.callsign" class="d-flex justify-content-between mt-1">
+        <span class="text-white-50">Callsign:</span>
+        <span class="badge bg-secondary font-monospace">{{ barcoSeleccionado.callsign }}</span>
+      </div>
+      <div *ngIf="barcoSeleccionado.imo" class="d-flex justify-content-between mt-1">
+        <span class="text-white-50">IMO:</span>
+        <span class="badge bg-dark font-monospace text-white">{{ barcoSeleccionado.imo }}</span>
+      </div>
+    </div>
+
+    <hr class="my-2 border-secondary"/>
+
+    <!-- Telemetría náutica en vivo -->
+    <div class="row g-2 text-white small">
+      <div class="col-6">
+        <span class="text-white-50 d-block">Velocidad</span>
+        <strong>{{ barcoSeleccionado.velocidad != null ? (barcoSeleccionado.velocidad | number:'1.1-1') + ' kn' : 'N/D' }}</strong>
+        <small *ngIf="barcoSeleccionado.velocidad != null" class="text-white-50 ms-1">
+          ({{ (barcoSeleccionado.velocidad * 1.852) | number:'1.0-0' }} km/h)
+        </small>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Rumbo</span>
+        <strong>{{ barcoSeleccionado.rumbo != null ? (barcoSeleccionado.rumbo | number:'1.0-0') + '°' : 'N/D' }}</strong>
+        <i *ngIf="barcoSeleccionado.rumbo != null" class="fa fa-arrow-up ms-1 text-info" [style.transform]="'rotate(' + barcoSeleccionado.rumbo + 'deg)'" style="display:inline-block;"></i>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Calado</span>
+        <strong>{{ barcoSeleccionado.calado != null ? (barcoSeleccionado.calado | number:'1.1-1') + ' m' : 'N/D' }}</strong>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Estado</span>
+        <span class="badge bg-info text-dark text-truncate" style="max-width: 130px;" [title]="barcoSeleccionado.estadoNav || 'Desconocido'">
+          {{ barcoSeleccionado.estadoNav || 'N/D' }}
+        </span>
+      </div>
+
+      <div class="col-12">
+        <span class="text-white-50 d-block">MMSI</span>
+        <strong class="font-monospace">{{ barcoSeleccionado.mmsi }}</strong>
+      </div>
+
+      <div class="col-12 mt-2">
+        <button type="button" class="btn btn-sm btn-outline-warning w-100" (click)="centrarEnBarco(barcoSeleccionado)">
+          <i class="fa fa-crosshairs"></i> Centrar cámara en este barco
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL FLOTANTE DE LA TABLA COMPLETA DE BARCOS -->
+  <div *ngIf="mostrarTabla" class="hud-table-overlay p-3 shadow-lg">
+    <div class="d-flex justify-content-between align-items-center mb-3 text-white">
+      <h5 class="m-0"><i class="fa fa-table text-warning"></i> Listado de Embarcaciones ({{ barcosFiltrados.length }})</h5>
+      <div class="d-flex align-items-center gap-3">
+        <!-- Buscador integrado en la tabla -->
+        <div class="input-group input-group-sm hud-search" style="width: 280px;">
+          <span class="input-group-text bg-transparent border-0 text-white-50"><i class="fa fa-search"></i></span>
+          <input type="text" 
+                 class="form-control bg-transparent text-white border-0" 
+                 placeholder="Filtrar por nombre, MMSI, país..." 
+                 [(ngModel)]="filtroBarco">
+        </div>
+        <button type="button" class="btn-close btn-close-white" (click)="mostrarTabla = false"></button>
+      </div>
+    </div>
+
+    <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
+      <table class="table table-dark table-hover table-sm align-middle m-0 text-center">
+        <thead class="table-secondary text-dark sticky-top">
+          <tr>
+            <th>BARCO / MMSI</th>
+            <th>TIPO</th>
+            <th>BANDERA / PAÍS</th>
+            <th>VELOCIDAD</th>
+            <th>RUMBO</th>
+            <th>DESTINO</th>
+            <th>ESTADO</th>
+            <th>ACCIÓN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let barco of barcosFiltrados" (click)="seleccionarBarco(barco)" style="cursor: pointer;">
+            <td class="fw-bold text-start">
+              <i class="fa fa-ship me-1 text-warning"></i> {{ barco.nombre || ('MMSI ' + barco.mmsi) }}
+            </td>
+            <td>
+              <span class="badge" [style.background-color]="obtenerColorTipo(barco.tipo)">
+                {{ barco.tipoDescripcion }}
+              </span>
+            </td>
+            <td>{{ barco.bandera }} {{ barco.pais }}</td>
+            <td>{{ barco.velocidad != null ? (barco.velocidad | number:'1.1-1') + ' kn' : '-' }}</td>
+            <td>{{ barco.rumbo != null ? (barco.rumbo | number:'1.0-0') + '°' : '-' }}</td>
+            <td class="text-truncate" style="max-width: 140px;" [title]="barco.destino || '-'">{{ barco.destino || '-' }}</td>
+            <td class="text-truncate" style="max-width: 130px;">{{ barco.estadoNav || '-' }}</td>
+            <td>
+              <button type="button" class="btn btn-xs btn-outline-warning" (click)="centrarEnBarco(barco); $event.stopPropagation();" title="Centrar en el mapa">
+                <i class="fa fa-crosshairs"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="barcosFiltrados.length === 0">
+            <td colspan="8" class="text-muted py-4">No se han detectado embarcaciones en el área visible con los filtros actuales.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

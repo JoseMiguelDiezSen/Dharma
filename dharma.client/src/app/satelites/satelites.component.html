@@ -1,0 +1,146 @@
+<div class="satelites-radar-container position-relative">
+
+  <!-- GLOBO ESPACIAL TRIDIMENSIONAL A PANTALLA COMPLETA (CESIUM 3D) -->
+  <div id="cesium-satelites" class="satelites-cesium"></div>
+
+  <!-- CARTEL DE CARGA DEL GLOBO 3D -->
+  <div *ngIf="cargando3D" class="hud-loading-3d-overlay d-flex flex-column align-items-center justify-content-center">
+    <div class="hud-loading-3d-card p-4 text-center shadow-lg">
+      <i class="fa fa-globe fa-spin fa-3x text-info mb-3"></i>
+      <h5 class="text-white fw-bold mb-1">Iniciando Globo Espacial 3D...</h5>
+      <p class="text-white-50 small mb-0">Cargando Cesium y telemetría orbital</p>
+    </div>
+  </div>
+
+  <!-- BARRA DE CONTROL FLOTANTE SUPERIOR (HUD ESPACIAL) -->
+  <div class="hud-satelites-top-bar d-flex align-items-center justify-content-between gap-2 p-2 px-3">
+
+    <!-- Izquierda: Estado en vivo, selector y satélite actual -->
+    <div class="d-flex align-items-center gap-2">
+      <span class="satelite-pulse-dot" [class.paused]="!autoRefresco"></span>
+      <span *ngIf="cargando" class="badge bg-warning text-dark">
+        <i class="fa fa-spinner fa-spin"></i> Conectando...
+      </span>
+      <span *ngIf="!cargando" class="badge bg-success text-white d-inline-flex align-items-center gap-1 py-1 px-2">
+        <i class="fa fa-check"></i> Actualizado
+      </span>
+    </div>
+
+    <!-- Derecha: Selector directo, botón En Vivo, Refrescar y Centrar -->
+    <div class="d-flex align-items-center gap-2">
+      <!-- Selector directo de satélites por nombre (ensanchado para evitar saltos) -->
+      <div class="input-group input-group-sm" style="width: 320px;">
+        <span class="input-group-text bg-dark text-info border-secondary"><i class="fa fa-satellite"></i></span>
+        <select class="form-select bg-dark text-white border-secondary"
+                [ngModel]="modoTodos ? 0 : noradIdSeleccionado"
+                (ngModelChange)="seleccionarSatelite(+$event)">
+          <option [value]="0">🌐 Todos los satélites</option>
+          <option *ngFor="let sat of satelitesDestacados" [value]="sat.noradId">
+            {{ sat.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Botón auto-refresco -->
+      <button type="button"
+              class="btn btn-sm"
+              [ngClass]="autoRefresco ? 'btn-success' : 'btn-outline-secondary text-white'"
+              (click)="alternarAutoRefresco()"
+              title="Auto-refresco en vivo cada 3 segundos">
+        <i class="fa fa-clock" [class.fa-spin]="autoRefresco"></i> {{ autoRefresco ? 'En Vivo' : 'Pausado' }}
+      </button>
+
+      <!-- Botón refresco manual -->
+      <button type="button" class="btn btn-sm btn-outline-light" (click)="obtenerTelemetria(false)" [disabled]="cargando" title="Actualizar telemetría ahora">
+        <i class="fa fa-refresh" [class.fa-spin]="cargando"></i>
+      </button>
+
+      <!-- Centrar en satélite o vista global si está en modo todos -->
+      <button type="button" class="btn btn-sm btn-warning text-dark fw-bold" (click)="modoTodos ? centrarVistaGlobal() : centrarEnSatelite()" title="Centrar cámara">
+        <i class="fa fa-crosshairs"></i> Centrar
+      </button>
+    </div>
+  </div>
+
+  <!-- TARJETA FLOTANTE DE TELEMETRÍA EN VIVO (HUD LATERAL) -->
+  <div *ngIf="sateliteActual" class="hud-telemetria-card p-3 shadow-lg">
+    <!-- Cabecera -->
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div>
+        <h5 class="m-0 text-info fw-bold">
+          <i class="fa fa-satellite"></i> {{ sateliteActual.nombre }}
+        </h5>
+        <small class="text-white-50">ID Satélite: <span class="badge bg-secondary font-monospace">{{ sateliteActual.noradId }}</span></small>
+      </div>
+      <!-- Indicador día / noche / eclipse -->
+      <span class="badge" [ngClass]="sateliteActual.visibilidad === 'daylight' ? 'bg-warning text-dark' : 'bg-primary text-white'">
+        <i class="fa" [ngClass]="sateliteActual.visibilidad === 'daylight' ? 'fa-sun' : 'fa-moon'"></i>
+        {{ sateliteActual.visibilidad === 'daylight' ? '☀️ Al Sol' : '🌑 En Sombra Terrestre' }}
+      </span>
+    </div>
+
+    <!-- Fotografía real o render oficial en el espacio -->
+    <div *ngIf="sateliteActual.foto" class="my-2 text-center">
+      <img [src]="sateliteActual.foto" [alt]="sateliteActual.nombre" class="img-fluid rounded border border-secondary border-opacity-50" style="max-height: 120px; width: 100%; object-fit: cover;">
+    </div>
+
+    <!-- Aviso destacado si hay humanos a bordo -->
+    <div *ngIf="sateliteActual.tripulacion" class="p-2 mb-2 rounded bg-success bg-opacity-25 border border-success text-center text-white small fw-bold">
+      <i class="fa fa-users text-warning me-1"></i> {{ sateliteActual.tripulacion }}
+    </div>
+
+    <hr class="my-2 border-secondary"/>
+
+    <!-- Métricas orbitales -->
+    <div class="row g-2 text-white small">
+      <div class="col-6">
+        <span class="text-white-50 d-block">Velocidad Orbital</span>
+        <strong class="text-warning fs-6">{{ sateliteActual.velocidadKmH | number:'1.0-0' }} km/h</strong>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Altitud Orbital</span>
+        <strong class="text-info fs-6">{{ sateliteActual.altitudKm | number:'1.0-1' }} km</strong>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Latitud</span>
+        <strong class="font-monospace">{{ sateliteActual.latitud | number:'1.4-4' }}°</strong>
+      </div>
+
+      <div class="col-6">
+        <span class="text-white-50 d-block">Longitud</span>
+        <strong class="font-monospace">{{ sateliteActual.longitud | number:'1.4-4' }}°</strong>
+      </div>
+
+      <!-- Año de lanzamiento y Agencia espacial (reemplazando la huella de cobertura) -->
+      <div class="col-6" *ngIf="sateliteActual.anioLanzamiento">
+        <span class="text-white-50 d-block">Lanzamiento</span>
+        <strong class="text-white">{{ sateliteActual.anioLanzamiento }}</strong>
+      </div>
+
+      <div class="col-6" *ngIf="sateliteActual.agencia">
+        <span class="text-white-50 d-block">Agencia Espacial</span>
+        <strong class="text-info">{{ sateliteActual.agencia }}</strong>
+      </div>
+
+      <div class="col-12">
+        <span class="text-white-50 d-block">Último Reporte de Telemetría</span>
+        <small class="text-white-50 font-monospace">{{ sateliteActual.timestamp * 1000 | date:'yyyy-MM-dd HH:mm:ss' }} UTC</small>
+      </div>
+
+      <!-- Botón de centrado y zoom en este satélite (idéntico al de Aviones) -->
+      <div class="col-12 mt-2">
+        <button type="button" class="btn btn-sm btn-outline-warning w-100" (click)="centrarEnSatelite()">
+          <i class="fa fa-crosshairs"></i> Centrar cámara en este satélite
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AVISO DE ERROR SI OCURRE -->
+  <div *ngIf="errorMsg" class="hud-error-alert alert alert-danger alert-dismissible fade show m-3" role="alert">
+    <i class="fa fa-exclamation-triangle"></i> {{ errorMsg }}
+  </div>
+
+</div>

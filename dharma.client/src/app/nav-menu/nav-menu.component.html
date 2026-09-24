@@ -1,0 +1,47 @@
+<header>
+
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+
+    <img [src]="jsmIcono" style="height:36px;width:72px;"/>
+
+    <div class="container">
+      <a class="navbar-brand text-light fw-bold" [routerLink]="['/']">Dharma</a>
+      <button class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+              aria-label="Toggle navigation"
+              [attr.aria-expanded]="isExpanded"
+              (click)="toggle()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
+           [ngClass]="{ show: isExpanded }">
+        <ul class="navbar-nav flex-grow">
+          <li class="nav-item"
+              [routerLinkActive]="['link-active']"
+              [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-light" [routerLink]="['/']"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
+          </li>
+
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" [routerLink]="['/usuarios']"><i class="fa fa-user" aria-hidden="true"></i>Usuarios</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" [routerLink]="['/aviones']"><i class="fa fa-plane" aria-hidden="true"></i>Aviones</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" [routerLink]="['/barcos']"><i class="fa fa-ship" aria-hidden="true"></i>Barcos</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" [routerLink]="['/satelites']"><i class="fa fa-satellite" aria-hidden="true"></i>Satelites</a>
+          </li>
+
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" [routerLink]="['/test']"><i class="fa fa-flask" aria-hidden="true"></i>Pruebas</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

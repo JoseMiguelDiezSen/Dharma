@@ -1,0 +1,391 @@
+/* ==========================================================================
+   CENTRO DE OPERACIONES GLOBALES DHARMA - ESTILOS TÁCTICOS HOME
+   ========================================================================== */
+
+:host {
+  display: block;
+  width: 100%;
+  color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Contenedor principal de la consola de mando */
+.command-center {
+  min-height: calc(100vh - 70px);
+  background: radial-gradient(circle at 50% 20%, #101c36 0%, #060a12 85%);
+  padding: 1.5rem;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+}
+
+/* Efecto sutil de rejilla táctica de fondo */
+.command-center::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   BARRA SUPERIOR HUD & RELOJ ZULU
+   ========================================================================== */
+
+.hud-header {
+  background: rgba(13, 22, 41, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.hud-title-zone {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hud-logo {
+  height: 60px;
+  width: 125px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(0, 229, 255, 0.6));
+}
+
+.hud-main-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin: 0;
+  background: linear-gradient(90deg, #ffffff, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hud-subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  color: #7dd3fc;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Reloj militar Zulu / UTC */
+.hud-clock-card {
+  background: rgba(4, 9, 20, 0.9);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  text-align: right;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.clock-label {
+  font-size: 0.65rem;
+  color: #38bdf8;
+  letter-spacing: 1px;
+}
+
+.clock-time {
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: #00e5ff;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+/* Puntos LED de estado de red */
+.pulse-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #00e676;
+  box-shadow: 0 0 10px #00e676;
+  animation: pulseGreen 1.8s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 7px rgba(0, 230, 118, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+}
+
+/* Tiras de estado del sistema */
+.system-status-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.status-pill {
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #94a3b8;
+}
+
+.status-pill.online {
+  color: #00e676;
+  border-color: rgba(0, 230, 118, 0.4);
+}
+
+/* ==========================================================================
+   TARJETAS TÁCTICAS MULTIDOMINIO (ESPACIO, AIRE, MAR)
+   ========================================================================== */
+
+.domain-card {
+  position: relative;
+  background: rgba(12, 19, 36, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Esquinas de retícula militar */
+.domain-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #00e5ff;
+  border-right: 2px solid #00e5ff;
+}
+
+.domain-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Dominio Espacial */
+.domain-space {
+  border-color: rgba(0, 229, 255, 0.3);
+}
+.domain-space:hover {
+  border-color: #00e5ff;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
+}
+.domain-space .domain-icon {
+  color: #00e5ff;
+  text-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+}
+
+/* Dominio Aéreo */
+.domain-air {
+  border-color: rgba(0, 230, 118, 0.3);
+}
+.domain-air:hover {
+  border-color: #00e676;
+  box-shadow: 0 0 25px rgba(0, 230, 118, 0.25);
+}
+.domain-air .domain-icon {
+  color: #00e676;
+  text-shadow: 0 0 15px rgba(0, 230, 118, 0.6);
+}
+
+/* Dominio Marítimo */
+.domain-sea {
+  border-color: rgba(41, 182, 246, 0.3);
+}
+.domain-sea:hover {
+  border-color: #29b6f6;
+  box-shadow: 0 0 25px rgba(41, 182, 246, 0.25);
+}
+.domain-sea .domain-icon {
+  color: #29b6f6;
+  text-shadow: 0 0 15px rgba(41, 182, 246, 0.6);
+}
+
+/* Dominio Operadores / Seguridad */
+.domain-security {
+  border-color: rgba(255, 171, 0, 0.3);
+}
+.domain-security:hover {
+  border-color: #ffab00;
+  box-shadow: 0 0 25px rgba(255, 171, 0, 0.25);
+}
+.domain-security .domain-icon {
+  color: #ffab00;
+  text-shadow: 0 0 15px rgba(255, 171, 0, 0.6);
+}
+
+/* Cabecera de cada tarjeta */
+.card-header-tactical {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.domain-badge {
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.domain-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.domain-description {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+/* Bloque de telemetría rápida dentro de cada tarjeta */
+.telemetry-box {
+  background: rgba(4, 9, 20, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  padding: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.telemetry-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.telemetry-row:last-child {
+  border-bottom: none;
+}
+
+.telemetry-label {
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.telemetry-value {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+/* Botón de acceso de alta tecnología */
+.btn-tactical {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-space {
+  background: rgba(0, 229, 255, 0.15);
+  color: #00e5ff;
+  border-color: #00e5ff;
+}
+.btn-space:hover {
+  background: #00e5ff;
+  color: #040914;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+}
+
+.btn-air {
+  background: rgba(0, 230, 118, 0.15);
+  color: #00e676;
+  border-color: #00e676;
+}
+.btn-air:hover {
+  background: #00e676;
+  color: #040914;
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.5);
+}
+
+.btn-sea {
+  background: rgba(41, 182, 246, 0.15);
+  color: #29b6f6;
+  border-color: #29b6f6;
+}
+.btn-sea:hover {
+  background: #29b6f6;
+  color: #040914;
+  box-shadow: 0 0 15px rgba(41, 182, 246, 0.5);
+}
+
+.btn-security {
+  background: rgba(255, 171, 0, 0.15);
+  color: #ffab00;
+  border-color: #ffab00;
+}
+.btn-security:hover {
+  background: #ffab00;
+  color: #040914;
+  box-shadow: 0 0 15px rgba(255, 171, 0, 0.5);
+}
+
+/* Barra de diagnóstico inferior */
+.footer-diag-bar {
+  margin-top: 1.5rem;
+  background: rgba(9, 14, 28, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.diag-link {
+  color: #38bdf8;
+  text-decoration: none;
+}
+.diag-link:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
+}

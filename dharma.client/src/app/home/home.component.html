@@ -1,0 +1,206 @@
+<div class="command-center">
+
+  <!-- ====================================================================
+       BARRA SUPERIOR HUD: IDENTIDAD, RELOJ ZULU MILITAR Y ESTADO DE RED
+       ==================================================================== -->
+  <!-- BARRA SUPERIOR HUD: IDENTIDAD Y SUBTÍTULO -->
+  <div class="hud-header">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      
+      <!-- Insignia Oficial y Título DHARMA con Earth Real-Time Tracker -->
+      <div class="hud-title-zone">
+        <img [src]="jsmIcon" alt="Dharma Emblem" class="hud-logo">
+        <div>
+          <h1 class="hud-main-title">DHARMA</h1>
+          <p class="hud-subtitle"><i class="fa fa-globe text-info me-1"></i> Earth Real-Time Tracker</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARJETA INDEPENDIENTE: ESTADO DE LOS SERVICIOS -->
+  <div class="domain-card mb-4" style="min-height: auto; padding: 1.25rem 1.5rem;">
+    <h4 class="text-white fw-bold mb-3" style="letter-spacing: 1.5px; font-size: 1.25rem;">
+      Estado de los servicios
+    </h4>
+
+    <!-- Tiras de Estado Operacional de los 3 Dominios -->
+    <div class="system-status-pills m-0 p-0 border-0">
+      <span class="status-pill" [class.online]="estadoSistemas.espacio === 'ONLINE'">
+        <span class="pulse-dot"></span>
+        <span>🛰️ ÓRBITA ESPACIAL: {{ estadoSistemas.espacio }}</span>
+      </span>
+      <span class="status-pill" [class.online]="estadoSistemas.aire === 'ONLINE'">
+        <span class="pulse-dot"></span>
+        <span>✈️ ESPACIO AÉREO ADS-B: {{ estadoSistemas.aire }}</span>
+      </span>
+      <span class="status-pill" [class.online]="estadoSistemas.mar === 'ONLINE'">
+        <span class="pulse-dot"></span>
+        <span>🚢 TRÁFICO MARÍTIMO AIS: {{ estadoSistemas.mar }}</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       PANELES DE LOS 3 VECTORES TÁCTICOS PRINCIPALES (ESPACIO, AIRE, MAR)
+       ==================================================================== -->
+  <div class="row g-4 mb-4">
+
+    <!-- VECTOR 1: ESPACIO Y SATÉLITES -->
+    <div class="col-lg-4 col-md-6">
+      <div class="domain-card domain-space">
+        <div>
+          <div class="card-header-tactical">
+            <div>
+              <span class="domain-badge text-info border border-info border-opacity-50">SECTOR ORBITAL</span>
+              <h3 class="domain-title">Vigilancia Espacial</h3>
+            </div>
+            <i class="fa fa-satellite fa-2x domain-icon"></i>
+          </div>
+
+          <p class="domain-description">
+            Rastreo en 3D de estaciones orbitales y observatorios espaciales en tiempo real. 
+            Cálculo dinámico de órbitas, telemetría y predicción de pasadas.
+          </p>
+
+          <!-- Telemetría en vivo -->
+          <div class="telemetry-box">
+            <div class="telemetry-row">
+              <span class="telemetry-label">Objetivo Primario</span>
+              <span class="telemetry-value text-info">{{ sateliteIss?.nombre || 'ISS (Estación Espacial)' }}</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Velocidad Orbital</span>
+              <span class="telemetry-value text-warning">
+                {{ sateliteIss?.velocidadKmH ? (sateliteIss.velocidadKmH | number:'1.0-0') + ' km/h' : '~27.600 km/h' }}
+              </span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Altitud Media</span>
+              <span class="telemetry-value text-light">
+                {{ sateliteIss?.altitudKm ? (sateliteIss.altitudKm | number:'1.1-1') + ' km' : '~420 km' }}
+              </span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Condición Solar</span>
+              <span class="telemetry-value" [class.text-warning]="sateliteIss?.visibilidad === 'daylight'" [class.text-primary]="sateliteIss?.visibilidad !== 'daylight'">
+                {{ sateliteIss?.visibilidad === 'daylight' ? '☀️ Al Sol' : '🌑 Sombra Terrestre' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <a [routerLink]="['/satelites']" class="btn-tactical btn-space">
+          <i class="fa fa-globe"></i> Desplegar Globo 3D
+        </a>
+      </div>
+    </div>
+
+    <!-- VECTOR 2: ESPACIO AÉREO Y AVIONES -->
+    <div class="col-lg-4 col-md-6">
+      <div class="domain-card domain-air">
+        <div>
+          <div class="card-header-tactical">
+            <div>
+              <span class="domain-badge text-success border border-success border-opacity-50">SECTOR AÉREO</span>
+              <h3 class="domain-title">Radar Aeroespacial</h3>
+            </div>
+            <i class="fa fa-plane fa-2x domain-icon"></i>
+          </div>
+
+          <p class="domain-description">
+            Monitorización ADS-B en directo de vuelos en espacio aéreo nacional e internacional. 
+            Filtro de rutas, altitudes de crucero, rumbos y alertas transponder Squawk.
+          </p>
+
+          <!-- Telemetría en vivo -->
+          <div class="telemetry-box">
+            <div class="telemetry-row">
+              <span class="telemetry-label">Aeronaves en Pantalla</span>
+              <span class="telemetry-value text-success">
+                {{ totalAviones !== null ? totalAviones + ' Vuelos' : 'Escaneando...' }}
+              </span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Redes ADS-B</span>
+              <span class="telemetry-value text-light">OpenSky + ADSB.fi</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Alerta Emergencias</span>
+              <span class="telemetry-value text-warning">Transponder Squawk</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Visor Cartográfico</span>
+              <span class="telemetry-value text-light">Dual 2D Leaflet / 3D Cesium</span>
+            </div>
+          </div>
+        </div>
+
+        <a [routerLink]="['/aviones']" class="btn-tactical btn-air">
+          <i class="fa fa-crosshairs"></i> Iniciar Radar Aéreo
+        </a>
+      </div>
+    </div>
+
+    <!-- VECTOR 3: TRÁFICO MARÍTIMO Y BUQUES -->
+    <div class="col-lg-4 col-md-12">
+      <div class="domain-card domain-sea">
+        <div>
+          <div class="card-header-tactical">
+            <div>
+              <span class="domain-badge text-info border border-info border-opacity-50">SECTOR NAVAL</span>
+              <h3 class="domain-title">Vigilancia Marítima</h3>
+            </div>
+            <i class="fa fa-ship fa-2x domain-icon"></i>
+          </div>
+
+          <p class="domain-description">
+            Recepción vía WebSocket en tiempo real de señales AIS. 
+            Seguimiento de buques de carga, petroleros, pasaje y pesqueros con nudos, eslora y ETA.
+          </p>
+
+          <!-- Telemetría en vivo -->
+          <div class="telemetry-box">
+            <div class="telemetry-row">
+              <span class="telemetry-label">Buques Detectados</span>
+              <span class="telemetry-value text-info">
+                {{ totalBarcos !== null ? totalBarcos + ' Embarcaciones' : 'Conectando...' }}
+              </span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Flujo de Telemetría</span>
+              <span class="telemetry-value text-success">WebSocket AISStream</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Zona de Búsqueda</span>
+              <span class="telemetry-value text-light">Atlántico, Estrecho, Baleares</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="telemetry-label">Identificación</span>
+              <span class="telemetry-value text-light">MMSI, Banderas MID, SOG/COG</span>
+            </div>
+          </div>
+        </div>
+
+        <a [routerLink]="['/barcos']" class="btn-tactical btn-sea">
+          <i class="fa fa-compass"></i> Desplegar Radar Naval
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ====================================================================
+       BARRA INFERIOR DE PROTOCOLO Y SEGURIDAD
+       ==================================================================== -->
+  <div class="footer-diag-bar">
+    <div>
+      <i class="fa fa-shield-alt text-info me-1"></i>
+      <strong>DHARMA</strong> &bull; ESTACIÓN CENTRAL DE VIGILANCIA // CLASIFICACIÓN: RESTRINGIDA
+    </div>
+    <div class="font-monospace text-muted">
+      NODE: SRV-DHARMA-01 &bull; PROTOCOL: SECURE-HTTPS
+    </div>
+  </div>
+
+</div>

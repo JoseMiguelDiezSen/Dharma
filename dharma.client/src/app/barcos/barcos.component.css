@@ -1,0 +1,195 @@
+/* Estilos específicos para el componente Barcos */
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Quita el borde y fondo blanco por defecto del marcador dinámico de Leaflet */
+:host ::ng-deep .marcador-barco {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Contenedor del Radar a pantalla completa pegado al menú sin hueco y sin scroll */
+.radar-container {
+  width: 100%;
+  height: calc(100vh - 45px);
+  margin-top: -1rem;
+  position: relative;
+  overflow: hidden;
+  background-color: #0b0f19;
+}
+
+.radar-map {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Barra de mandos flotante superior (Glassmorphism) */
+.hud-top-bar {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(11, 15, 25, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Indicador de pulso de radar en vivo */
+.radar-pulse-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: radarPulse 1.8s infinite;
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* Carrusel de categorías de embarcaciones */
+.hud-categorias-carrusel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-grow: 1;
+}
+
+.hud-categorias-carrusel::-webkit-scrollbar {
+  display: none;
+}
+
+.hud-tipo-badge {
+  font-size: 0.75rem;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  border-radius: 6px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Tarjeta flotante de telemetría del barco seleccionado */
+.hud-ship-card {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1000;
+  width: 320px;
+  background: rgba(11, 15, 25, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 12px;
+  color: #f1f5f9;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Buscador translúcido */
+.hud-search {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hud-search input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Panel flotante de la tabla de barcos */
+.hud-table-overlay {
+  position: absolute;
+  top: 75px;
+  left: 20px;
+  right: 20px;
+  bottom: 25px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background: rgba(11, 15, 25, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Marcador del barco en el radar */
+:host ::ng-deep .marcador-barco-radar {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+}
+
+:host ::ng-deep .marcador-barco-radar:hover svg {
+  filter: drop-shadow(0 0 8px #38bdf8) scale(1.25) !important;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Barra de progreso náutica en la tarjeta flotante */
+.nautical-progress-container {
+  position: relative;
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.nautical-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  position: relative;
+}
+
+.nautical-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  transition: width 0.6s ease;
+}
+
+.nautical-progress-ship {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #38bdf8;
+  font-size: 0.82rem;
+  filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.9));
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+

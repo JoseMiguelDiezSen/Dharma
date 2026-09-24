@@ -1,0 +1,106 @@
+
+<!-- MODAL AGREGAR USUARIO -->
+<div *ngIf="modalAgregarUsuario"
+     class="modal fade show"
+     style="display:block;"
+     tabindex="-1">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+
+          <!-- Aqui mi icono de la cabecera-->
+          <i class="fa fa-user" aria-hidden="true"></i>
+          AGREGAR USUARIO
+        </h5>
+
+        <!-- Al pulsar la X, llama a cerrarModal() que avisa al padre -->
+        <button type="button"
+                class="btn-close"
+                (click)="cerrarModal()">
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <div class="row">
+
+          <!-- NOMBRE -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Nombre</label>
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="usuario.nombreUsuario">
+          </div>
+
+          <!-- EMAIL -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email"
+                   class="form-control"
+                   [(ngModel)]="usuario.email">
+          </div>
+
+          <!-- TELÉFONO -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Teléfono</label>
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="usuario.telefono">
+          </div>
+
+          <!-- PASSWORD -->
+          <div class="mb-3 col-md-6">
+            <label class="form-label">Password</label>
+
+            <div class="input-group">
+              <input [type]="mostrarPassword ? 'text' : 'password'"
+                     class="form-control"
+                     [(ngModel)]="usuario.password">
+
+              <button type="button"
+                      class="btn btn-outline-secondary"
+                      (click)="mostrarPassword = !mostrarPassword">
+
+                <i class="fa"
+                   [class.fa-eye]="!mostrarPassword"
+                   [class.fa-eye-slash]="mostrarPassword"
+                   aria-hidden="true">
+                </i>
+
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer d-flex justify-content-start">
+
+        <!-- Al pulsar Aceptar, llama a addUser() -->
+        <button type="button"
+                class="btn btn-outline-success"
+                (click)="addUser()">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          ACEPTAR
+        </button>
+
+        <!-- Al pulsar Cancelar, llama a cerrarModal() que avisa al padre -->
+        <button type="button"
+                class="btn btn-outline-danger"
+                (click)="cerrarModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          CANCELAR
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

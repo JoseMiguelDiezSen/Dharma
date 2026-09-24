@@ -1,0 +1,53 @@
+<!-- MODAL ELIMINAR USUARIO -->
+<div *ngIf="modalEliminarUsuario"
+     class="modal fade show"
+     style="display:block;"
+     tabindex="-1">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+          ELIMINAR USUARIO
+        </h5>
+
+        <!-- Al pulsar la X, llama a cerrarModal() que avisa al padre -->
+        <button type="button"
+                class="btn-close"
+                (click)="cerrarModal()">
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <p class="m-0">
+          ¿Desea realmente eliminar al usuario <strong>{{ usuario?.nombreUsuario }}</strong> (ID: {{ usuario?.idUsuario }})?
+        </p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer d-flex justify-content-start">
+
+        <button type="button"
+                class="btn btn-outline-success"
+                (click)="deleteUser()">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          ACEPTAR
+        </button>
+
+        <!-- Al pulsar Cancelar, llama a cerrarModal() que avisa al padre -->
+        <button type="button"
+                class="btn btn-outline-danger"
+                (click)="cerrarModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          CANCELAR
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
