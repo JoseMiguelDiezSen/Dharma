@@ -3,7 +3,9 @@
    ========================================================================== */
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
   width: 100%;
   color: #e2e8f0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -11,9 +13,11 @@
 
 /* Contenedor principal de la consola de mando */
 .command-center {
-  min-height: calc(100vh - 70px);
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
   background: radial-gradient(circle at 50% 20%, #101c36 0%, #060a12 85%);
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 10px;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
@@ -57,7 +61,8 @@
 
 .hud-logo {
   height: 60px;
-  width: 125px;
+  width: auto;
+  max-width: 125px;
   object-fit: contain;
   filter: drop-shadow(0 0 14px rgba(0, 229, 255, 0.6));
 }
@@ -365,16 +370,17 @@
   box-shadow: 0 0 15px rgba(255, 171, 0, 0.5);
 }
 
-/* Barra de diagnóstico inferior */
+/* Barra de diagnóstico inferior: anclada al fondo del panel */
 .footer-diag-bar {
-  margin-top: 1.5rem;
+  margin-top: auto;
   background: rgba(9, 14, 28, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   padding: 0.75rem 1.25rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   flex-wrap: wrap;
   gap: 1rem;
   font-size: 0.75rem;

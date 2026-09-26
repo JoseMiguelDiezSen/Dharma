@@ -11,7 +11,7 @@ export class NavMenuComponent {
 
   // Rutas imagenes
   readonly imageLogo = "../../assets/imageButton.svg";
-  jsmIcono = "../../assets/logoJSMTransparente.png"
+  jsmIcono = "../../assets/JMDCorto-optimizado.png"
 
 
 

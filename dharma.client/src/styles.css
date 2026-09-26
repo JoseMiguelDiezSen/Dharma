@@ -33,6 +33,9 @@ body:has(app-usuarios) {
 body:has(app-home) {
   background-color: #060a12;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Contenedor adaptado para la Home sin restricciones estrechas de Bootstrap */
@@ -41,6 +44,9 @@ body:has(app-home) {
   width: 100% !important;
   padding: 0 1.25rem !important;
   margin: 0 auto !important;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Pantalla de Aviones: Estilo Radar a pantalla completa sin márgenes */

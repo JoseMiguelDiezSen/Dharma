@@ -12,7 +12,7 @@ import { retry } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
   // Rutas imagenes
   readonly imageLogo = "../../assets/imageButton.svg";
-  jsmIcon = "../../assets/logoJSMTransparente.png";
+  jsmIcon = "../../assets/JMDCorto-optimizado.png";
 
   // Reloj militar Zulu (UTC) y hora local
   horaUtc: string = '--:--:-- ZULU';
