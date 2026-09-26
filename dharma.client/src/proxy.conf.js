@@ -6,20 +6,10 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const PROXY_CONFIG = [
   {
     context: [
-      "/weatherforecast",
       "/api"
     ],
     target,
-    secure: false,
-    changeOrigin: true,
-    onError: (err, req, res) => {
-      if (err.code === 'ECONNREFUSED' || err.code === 'ECONNRESET') {
-        if (res.writeHead && !res.headersSent) {
-          res.writeHead(503, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ status: 'Esperando backend...' }));
-        }
-      }
-    }
+    secure: false
   }
 ];
 
